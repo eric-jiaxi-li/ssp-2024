@@ -1,5 +1,5 @@
 """
-Least Squares Plate Reduction
+Least Squares Plate Reduction code
 
 LCO elp0m414... in inputs folder
 
