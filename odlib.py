@@ -8,7 +8,7 @@ with negative inputs for right ascension
 Also need to check comments to make sure I 
 specified things like deg/rad right
 
-Eric Li
+Eric Li SSP 2024
 """
 from math import *
 from astropy.io import fits
