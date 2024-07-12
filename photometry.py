@@ -1,8 +1,6 @@
 """
 Photometry
 
-Move over to odlib.py when done
-
 Eric Li
 """
 
