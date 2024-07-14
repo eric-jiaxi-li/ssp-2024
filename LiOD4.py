@@ -12,11 +12,13 @@ import odlib
 
 debug = True
 
-def gen_eph(fits_file, sun_vec):
+def gen_eph(fits_file, sun_vec, earth_tilt_deg):
     """
     Params: Text file containing the orbital elements at Jul 14, 2018 (0 UTC)
             Earth-sun vector as a np array in equatorial coords
-            Date of desired ephemeris: Y, M, D, time in decimal hrs UTC
+            # Date of desired ephemeris: Y, M, D, time in decimal hrs UTC
+            Tilt of earth in degrees
+            All units AU, days
     Return: RA/DEC of asteroid at the specified time
     """
     
@@ -44,7 +46,7 @@ def gen_eph(fits_file, sun_vec):
     w = W
     M = MA
     
-    E = odlib.solve_kep(radians(M), e) # Eccentric anomaly, rad
+    E = odlib.solve_kepler(radians(M), e) # Eccentric anomaly, rad
     
     r = np.array([a * cos(E) - a * e, a * sqrt(1 - e ** 2) * sin(E), 0])
     
@@ -60,7 +62,7 @@ def gen_eph(fits_file, sun_vec):
     r = omega_spin @ i_spin @ w_spin @ r
 
     # Correct for tilt of earth
-    tilt = radians(23.5) # Angle of earth's axis
+    tilt = radians(earth_tilt_deg) # Angle of earth's axis
     tilt_spin = np.array([[1, 0, 0], 
                           [0, cos(tilt), -sin(tilt)], 
                           [0, sin(tilt), cos(tilt)]])
@@ -71,7 +73,17 @@ def gen_eph(fits_file, sun_vec):
     rho_hat = rho / odlib.mag(rho)
 
     # RA and DEC
+    DEC = degrees(asin(rho_hat[2]))
+    cos_RA = (rho_hat[0] / cos(radians(DEC)))
+    sin_RA = (rho_hat[1] / cos(radians(DEC)))
+    RA = odlib.quadrant_deg(sin_RA, cos_RA)
     
-    
+    return RA, DEC
 
-    return None
+
+sun_vec = np.array([-6.573682734490408E-01, 
+                    7.092594484733306E-01, 
+                    3.074361163608106E-01])
+RA, DEC = gen_eph("inputs/LiInputElements.txt", sun_vec, 23.5)
+
+print(odlib.RA_decimal_to_HMS(RA), odlib.DEC_decimal_to_DMS(DEC))

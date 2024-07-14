@@ -172,7 +172,7 @@ def baby_od_all_elements(filename, curr_date_julian):
 # Calculate Julian date from UTC year, month, day
 # Using https://awb.fyi/ssp/exercises-1.html
 Y, M, D = 2018, 7, 14
-J = 367*Y - 7 * (Y + (M+9)//12)//4 + (275*M)//9 + D + 1721013.5
-
+# J = 367*Y - 7 * (Y + (M+9)//12)//4 + (275*M)//9 + D + 1721013.5
+J = odlib.julian(Y, M, D)
 print()
 baby_od_all_elements("inputs/LiInput.txt", J)

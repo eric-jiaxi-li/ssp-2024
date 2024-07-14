@@ -188,6 +188,12 @@ def DEC_decimal_to_DMS(DEC):
 
 
 
+def julian(Y, M, D):
+    """
+    Params: Year, Month, Day
+    Return: Julian date at 0 UTC of that time
+    """
+    return 367*Y - 7 * (Y + (M+9)//12)//4 + (275*M)//9 + D + 1721013.5
 
 
 
