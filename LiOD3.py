@@ -145,24 +145,24 @@ def baby_od_all_elements(filename, curr_date_julian):
     Tp_true = 2458158.720849720296
 
     print("-----ANGULAR ELEMENTS-----")
-    def check_error(my_val, true_val, element_name):
-        percent_error = (my_val - true_val) / true_val * 100
+    # def check_error(my_val, true_val, element_name):
+    #     percent_error = (my_val - true_val) / true_val * 100
 
-        if abs(percent_error) < 0.02: # Threshold set by instructor
-            status = "Passed"
-        else:
-            status = "Failed"
+    #     if abs(percent_error) < 0.02: # Threshold set by instructor
+    #         status = "Passed"
+    #     else:
+    #         status = "Failed"
 
-        print("{} {} | Calculated = {} | Actual = {} | Percent error = {} %".format(status, element_name, round(my_val, 5), round(true_val, 5), percent_error))
+    #     print("{} {} | Calculated = {} | Actual = {} | Percent error = {} %".format(status, element_name, round(my_val, 5), round(true_val, 5), percent_error))
 
     print("JULIAN DATE: {}".format(curr_date_julian))
-    check_error(a, A_true, "a")
-    check_error(e, EC_true, "e")
-    check_error(i, IN_true, "i")
-    check_error(omega, OM_true, "omega")
-    check_error(w, W_true, "w")
-    check_error(M, MA_true, "M")
-    check_error(t_0, Tp_true, "last periapsis")
+    odlib.check_error(a, A_true, "a")
+    odlib.check_error(e, EC_true, "e")
+    odlib.check_error(i, IN_true, "i")
+    odlib.check_error(omega, OM_true, "omega")
+    odlib.check_error(w, W_true, "w")
+    odlib.check_error(M, MA_true, "M")
+    odlib.check_error(t_0, Tp_true, "last periapsis")
 
 
 

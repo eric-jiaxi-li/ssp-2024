@@ -41,6 +41,22 @@ def testF(function_name, test_value, expected):
           test_value, 
           "| Exp =", 
           expected)
+    
+
+def check_error(my_val, true_val, var_name, threshold = 0.02):
+    """
+    Params: my value, the true value of the variable,
+            variable name as string, threshold percent
+            (default 0.02%)
+    """
+    percent_error = (my_val - true_val) / true_val * 100
+
+    if abs(percent_error) < threshold: 
+        status = "Passed"
+    else:
+        status = "Failed"
+
+    print("{} {} | Calculated = {} | Actual = {} | Percent error = {} %".format(status, var_name, round(my_val, 5), round(true_val, 5), percent_error))
 
 
 
