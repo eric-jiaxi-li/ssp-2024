@@ -12,15 +12,20 @@ import odlib
 
 debug = True
 
-def gen_eph(fits_file, sun_vec, earth_tilt_deg):
+def gen_eph(fits_file, sun_vec, earth_tilt_deg, time_Y, time_M, time_D, obs_Y = 2018, obs_M = 7, obs_D = 14):
     """
-    Params: Text file containing the orbital elements at Jul 14, 2018 (0 UTC)
+    Params: Text file containing the orbital elements at specified time
             Earth-sun vector as a np array in equatorial coords
-            # Date of desired ephemeris: Y, M, D, time in decimal hrs UTC
             Tilt of earth in degrees
+            Date of desired ephemeris: Y, M, D at 0 UTC
+            Observation time in same format
             All units AU, days
     Return: RA/DEC of asteroid at the specified time
     """
+
+    eph_time_julian = odlib.julian(time_Y, time_M, time_D)
+    obs_time_julian = odlib.julian(obs_Y, obs_M, obs_D)
+    interval_Gaussian = odlib.days_to_GD(eph_time_julian - obs_time_julian)
     
     # Units: AU and days (need to convert to Gaussian Days!)
     # Each value on a separate line
@@ -45,6 +50,10 @@ def gen_eph(fits_file, sun_vec, earth_tilt_deg):
     omega = OM
     w = W
     M = MA
+
+    # Update mean anomaly
+    period_Gaussian = sqrt(4 * pi ** 2 * a ** 3)
+    M += 360 * interval_Gaussian / period_Gaussian
     
     E = odlib.solve_kepler(radians(M), e) # Eccentric anomaly, rad
     

@@ -197,8 +197,14 @@ def julian(Y, M, D):
 
 
 
-
-
+def days_to_GD(time):
+    # Regular days to Gaussian days
+    k_Gauss = 0.0172020989484
+    return time * k_Gauss
+def GD_to_days(time):
+    # Gaussian days to regular days
+    k_Gauss = 0.0172020989484
+    return time / k_Gauss
 
 
 
