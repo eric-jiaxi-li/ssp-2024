@@ -69,15 +69,15 @@ def gen_eph(fits_file, sun_vec, earth_tilt_deg, eph_Y, eph_M, eph_D, obs_Y, obs_
 
     # Update mean anomaly
     period_Gaussian = sqrt(4 * (pi ** 2) * (a ** 3))
-    M += 2 * pi * interval_Gaussian / period_Gaussian
-    M = (M % (2 * pi))
-    
+    M += 2 * pi * interval_Gaussian / period_Gaussian 
+    M = (M % (2 * pi)) # Correct value from Vince that gives the right numbers: 2.767463004482487
+
     E = odlib.solve_kepler(M, e, threshold = 1e-9) # Eccentric anomaly, rad
 
-    # if debug == True:
-    #     print("Period in Gaussian days", period_Gaussian)
-    #     print()
-    #     print("Orbital elements", a, e, degrees(i), degrees(omega), degrees(w), degrees(M))
+    if debug == True:
+        print("Period in Gaussian days", period_Gaussian)
+        print()
+        print("Orbital elements", a, e, degrees(i), degrees(omega), degrees(w), degrees(M), M)
 
     
     r = np.array([a * cos(E) - a * e, a * sqrt(1 - e ** 2) * sin(E), 0])
@@ -112,10 +112,6 @@ def gen_eph(fits_file, sun_vec, earth_tilt_deg, eph_Y, eph_M, eph_D, obs_Y, obs_
                          -1.264520891384611E+00, 
                          3.889586403195763E-02])
         print("JPL sun->ast vector (equatorial)", r_eq_JPL)
-        # r_eq = r_eq_JPL
-        # Ouput with this line:
-        # 17.0 hours 42.0 minutes 22.173987 seconds 
-        # 31 degrees 52 arcminutes 36.42094 arcseconds
 
     # Range vector
     rho = r_eq + sun_vec
@@ -132,32 +128,33 @@ def gen_eph(fits_file, sun_vec, earth_tilt_deg, eph_Y, eph_M, eph_D, obs_Y, obs_
 
 
 
-
+# Earth to sun vector from JPL Horizons
+sun_vec = np.array([-6.573682734490408E-01, 
+                    7.092594484733306E-01, 
+                    3.074361163608106E-01])
 
 
 use_jul_elements = True
-use_aug_elements = False
+# use_aug_elements = False # For debug only
 
 if use_jul_elements == True:
-    # Earth to sun vector from JPL Horizons
-    sun_vec = np.array([-6.573682734490408E-01, 
-                        7.092594484733306E-01, 
-                        3.074361163608106E-01])
 
     RA, DEC = gen_eph("inputs/LiInputElements20180714.txt", sun_vec, 23.4384987711, 2018, 8, 3, 2018, 7, 14) # Sun tilt from Dr. F
 
-    #  2018-Aug-03 00:00 *   17 43 03.48 +31 52 17.1  168.7875
+    # Astrometric, not apparent
+    #  2018-Aug-03 00:00 *   17 42 21.20 +31 52 28.1  168.7875
     print()
     print("-----GENERATED EPHEMERIS USING 20180714 ELEMENTS-----")
     print(odlib.RA_decimal_to_HMS(RA), odlib.DEC_decimal_to_DMS(DEC))
     print()
 
-if use_aug_elements == True:
-    # Try to use orbital elements from 20180803 since the elements change over time
-    RA, DEC = gen_eph("inputs/LiInputElements20180803.txt", sun_vec, 23.4384987711, 2018, 8, 3, 2018, 8, 3) # Sun tilt from Dr. F
+# if use_aug_elements == True:
+#     # Try to use orbital elements from 20180803 since the elements change over time
+#     RA, DEC = gen_eph("inputs/LiInputElements20180803.txt", sun_vec, 23.4384987711, 2018, 8, 3, 2018, 8, 3) # Sun tilt from Dr. F
 
-    #  2018-Aug-03 00:00 *   17 43 03.48 +31 52 17.1  168.7875
-    print()
-    print("-----GENERATED EPHEMERIS USING 20180803 ELEMENTS-----")
-    print(odlib.RA_decimal_to_HMS(RA), odlib.DEC_decimal_to_DMS(DEC))
-    print()
+#     # Astrometric, not apparent
+#     #  2018-Aug-03 00:00 *   17 42 21.20 +31 52 28.1  168.7875
+#     print()
+#     print("-----GENERATED EPHEMERIS USING 20180803 ELEMENTS-----")
+#     print(odlib.RA_decimal_to_HMS(RA), odlib.DEC_decimal_to_DMS(DEC))
+#     print()
