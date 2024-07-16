@@ -28,6 +28,7 @@ print("Estimation for pi =", num / den * 4)
 
 
 # Integrate sin^2 ( 1 / (x * (2-x)))
+# Monte carlo integration
 
 def f(x):
     return (np.sin(1 / (x * (2 - x)))) ** 2 # Need np.sin to pass in np array
