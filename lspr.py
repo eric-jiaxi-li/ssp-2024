@@ -18,17 +18,17 @@ debug = True
 
 
 
-b1, b2, a11, a12, a21, a22, sigma_RA, sigma_DEC, RA, DEC = odlib.lspr("inputs/LSPRtestinput1.txt", 484.35, 382.62, True)
-print()
-print("----------LSPR RESULTS, TEST INPUT----------")
-print("Plate constants b1 {} b2 {} a11 {} a12 {} a21 {} a22 {} ".format(b1, b2, a11, a12, a21, a22))
-print("Uncertainties RA {} DEC {}".format(sigma_RA, sigma_DEC))
-print("RA {} DEC {}".format(RA, DEC))
+# b1, b2, a11, a12, a21, a22, sigma_RA, sigma_DEC, RA, DEC = odlib.lspr("inputs/LSPRtestinput1.txt", 484.35, 382.62, True)
+# print()
+# print("----------LSPR RESULTS, TEST INPUT----------")
+# print("Plate constants b1 {} b2 {} a11 {} a12 {} a21 {} a22 {} ".format(b1, b2, a11, a12, a21, a22))
+# print("Uncertainties RA {} DEC {}".format(sigma_RA, sigma_DEC))
+# print("RA {} DEC {}".format(RA, DEC))
 
 
 
 
-b1, b2, a11, a12, a21, a22, sigma_RA, sigma_DEC, RA, DEC = odlib.lspr("inputs/LSPRinputLi.txt", 1235.5, 1168.5, True)
+b1, b2, a11, a12, a21, a22, sigma_RA, sigma_DEC, RA, DEC = odlib.lspr("inputs/LCO_found_2_input.txt", 1235.5, 1168.5, True)
 print()
 print("----------LSPR RESULTS, OUR ASTEROID----------")
 print("Plate constants b1 {} b2 {} a11 {} a12 {} a21 {} a22 {} ".format(b1, b2, a11, a12, a21, a22))
