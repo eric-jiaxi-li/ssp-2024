@@ -20,7 +20,7 @@ debug = True
 
 
 
-# b1, b2, a11, a12, a21, a22, sigma_RA, sigma_DEC, RA, DEC = odlib.lspr("inputs/LSPRtestinput1.txt", 484.35, 382.62, True)
+# b1, b2, a11, a12, a21, a22, sigma_RA, sigma_DEC, RA, DEC = odlib.lspr("inputs/lspr_test.txt", 484.35, 382.62, True)
 # print()
 # print("----------LSPR RESULTS, TEST INPUT----------")
 # print("Plate constants b1 {} b2 {} a11 {} a12 {} a21 {} a22 {} ".format(b1, b2, a11, a12, a21, a22))

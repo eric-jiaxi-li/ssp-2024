@@ -32,7 +32,7 @@ print()
 
 print("----------2. Differential Photometry----------")
 
-C, m_catalog, dm, sigma_m_catalog = odlib.diff_photometry("input_images/diff_phot.fit", "inputs/stars_test.txt", 546, 327)
+C, m_catalog, dm, sigma_m_catalog = odlib.diff_photometry("input_images/diff_phot.fit", "inputs/photometry_stars_test.txt", 546, 327)
 print("Avg offset between catalog/instrumental magnitudes", C)
 print("Systematic uncertainty dm", dm)
 print("Catalog magnitude: {} +/- {}".format(m_catalog, sigma_m_catalog))
