@@ -1,6 +1,13 @@
 """
 Photometry
 
+How to generate the 10 stars in DS9:
+Open the image, z-scale, then open catalog from analysis tab
+Go to edit -> cat WHILE KEEPING CATALOG OPEN, double-click a green
+circle. Go back to catalog and the entry of that star will be highlighted
+Magnitude is Vmag
+Do centroiding by doing edit -> region, then double clicking the region
+
 Eric Li
 """
 
@@ -15,7 +22,7 @@ debug = False
 
 print("----------1. Aperture Photometry----------")
 
-S, sigma_S, SNR, m_inst, sigma_m_inst = odlib.photometry("inputs/aptest.fit", 490, 293, 5, 8, 13, 11, 10, 1)
+S, sigma_S, SNR, m_inst, sigma_m_inst = odlib.photometry("input_images/aptest.fit", 490, 293, 5, 8, 13, 11, 10, 1)
 print("Signal: {} +/- {} (ADU)".format(S, sigma_S))
 print("Signal-to-noise ratio: {}".format(SNR))
 print("Instrumental magnitude: {} +/- {}".format(m_inst, sigma_m_inst))
@@ -25,7 +32,7 @@ print()
 
 print("----------2. Differential Photometry----------")
 
-C, m_catalog, dm, sigma_m_catalog = odlib.diff_photometry("inputs/diff_phot.fit", "inputs/stars_test.txt", 546, 327)
+C, m_catalog, dm, sigma_m_catalog = odlib.diff_photometry("input_images/diff_phot.fit", "inputs/stars_test.txt", 546, 327)
 print("Avg offset between catalog/instrumental magnitudes", C)
 print("Systematic uncertainty dm", dm)
 print("Catalog magnitude: {} +/- {}".format(m_catalog, sigma_m_catalog))

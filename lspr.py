@@ -6,6 +6,8 @@ LCO elp0m414... in inputs folder
 To get RA/DEC/centroids of reference stars, open image in DS9, create a region,
 go to region -> centroid
 
+Alternatively, just double click and switch fk5 and image
+
 Eric Li
 
 DONE
@@ -26,11 +28,20 @@ debug = True
 # print("RA {} DEC {}".format(RA, DEC))
 
 
+b1, b2, a11, a12, a21, a22, sigma_RA, sigma_DEC, RA, DEC = odlib.lspr("inputs/LCO_found_1_input.txt", 1235, 1193, True)
+print()
+print("----------LSPR RESULTS 1, OUR ASTEROID----------")
+print("Plate constants b1 {} b2 {} a11 {} a12 {} a21 {} a22 {} ".format(b1, b2, a11, a12, a21, a22))
+print("Uncertainties RA {} DEC {}".format(sigma_RA, sigma_DEC))
+print("RA {} DEC {}".format(RA, DEC))
 
+print()
+print()
+print()
 
 b1, b2, a11, a12, a21, a22, sigma_RA, sigma_DEC, RA, DEC = odlib.lspr("inputs/LCO_found_2_input.txt", 1235.5, 1168.5, True)
 print()
-print("----------LSPR RESULTS, OUR ASTEROID----------")
+print("----------LSPR RESULTS 2, OUR ASTEROID----------")
 print("Plate constants b1 {} b2 {} a11 {} a12 {} a21 {} a22 {} ".format(b1, b2, a11, a12, a21, a22))
 print("Uncertainties RA {} DEC {}".format(sigma_RA, sigma_DEC))
 print("RA {} DEC {}".format(RA, DEC))
