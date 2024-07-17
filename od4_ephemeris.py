@@ -1,6 +1,8 @@
 """
 Ephemeris generation
 
+Checked off by Dr. F!
+
 Eric Li
 """
 

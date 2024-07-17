@@ -681,7 +681,7 @@ def diff_photometry(fits_file, ref_stars_txt, ast_x, ast_y):
 
 
 
-def gen_eph(fits_file, sun_vec, earth_tilt_deg, eph_Y, eph_M, eph_D, obs_Y, obs_M, obs_D):
+def gen_eph(text_file, sun_vec, earth_tilt_deg, eph_Y, eph_M, eph_D, obs_Y, obs_M, obs_D):
     """
     Params: Text file containing the orbital elements (Note:
             may vary from time to time) at observation time
@@ -697,7 +697,7 @@ def gen_eph(fits_file, sun_vec, earth_tilt_deg, eph_Y, eph_M, eph_D, obs_Y, obs_
     interval_Gaussian = days_to_GD(eph_time_julian - obs_time_julian)
     
     # Each value on a separate line
-    fin = open(fits_file)
+    fin = open(text_file)
     EC = float(fin.readline()) # Eccentricity
     QR = float(fin.readline())
     IN = float(fin.readline()) # Inclination (deg)
@@ -723,11 +723,6 @@ def gen_eph(fits_file, sun_vec, earth_tilt_deg, eph_Y, eph_M, eph_D, obs_Y, obs_
     period_Gaussian = sqrt(4 * (pi ** 2) * (a ** 3))
     M += 2 * pi * interval_Gaussian / period_Gaussian 
     M = (M % (2 * pi)) 
-
-    if debug == True:
-        print("Interval in GD", interval_Gaussian)
-        print("Period in GD", period_Gaussian)
-        print(radians(MA))
 
     E = solve_kepler(M, e, threshold = 1e-9) # Eccentric anomaly, rad
 
@@ -763,7 +758,6 @@ def gen_eph(fits_file, sun_vec, earth_tilt_deg, eph_Y, eph_M, eph_D, obs_Y, obs_
     RA = quadrant_deg(sin_RA, cos_RA)
     
     return RA, DEC
-
 
 
 
