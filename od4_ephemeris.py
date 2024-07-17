@@ -49,8 +49,9 @@ if use_jul_elements == True:
     #  2018-Aug-03 00:00 *   17 42 21.20 +31 52 28.1  168.7875
     print()
     print("-----GENERATED EPHEMERIS USING 20180714 ELEMENTS-----")
+    odlib.check_error(RA, odlib.HMS_to_deg(17, 42, 21.20), "RA")
+    odlib.check_error(DEC, odlib.DMS_to_deg(31, 52, 28.1), "DEC")
     print(odlib.RA_decimal_to_HMS(RA), odlib.DEC_decimal_to_DMS(DEC))
-    print("Actual: 17 42 21.20 and +31 52 28.1  168.7875")
     print()
 
 
