@@ -8,6 +8,8 @@ a. required input:
 - Flag specifying functions or 3rd, 4th order series
 b. required output:
 - the corresponding f and g values
+
+Checked by Dr. F
 """
 
 import numpy as np
@@ -18,7 +20,7 @@ debug = True
 
 def get_fg(tau1, tau3, r2, r2_dot, flag):
     """
-    Params: Mostly self-explanatory. Flag: 3rd or 4th order
+    Params: See OD Guide. Flag: 3rd or 4th order
             approximation, 3 or 4
             Functions not necessary, says Dr. F
     Return: values of f1, f3, g1, g3
