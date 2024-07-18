@@ -1,7 +1,7 @@
 # https://canvas.instructure.com/courses/9410180/assignments/48000863?module_item_id=112668832
 
 
-# Suppress FutureWarning delim_whitespace = True
+# Suppress FutureWarning for delim_whitespace = True
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
@@ -48,6 +48,28 @@ METALLICITY: https://arxiv.org/abs/1310.6297 Based on theoretical models the dif
 initial metallicity of M67 is estimated to be [Fe/H] = +0.06.
 AGE: "Generating an Isochrone" says 2e8 years
 """
-
+# Superimpose Isochrone and Color-magnitude diagram (CMD)
 iso = pd.read_table("sdss_project/isochrone_M67.txt", delim_whitespace = True, skiprows = 8)
-x = iso["LogL/Lo"]
+iso_x = iso["sdss_g"] - iso["sdss_r"]
+iso_y = iso["sdss_r"]
+plt.plot(iso_x, iso_y, "r.")
+
+data = pd.read_csv("sdss_project/csv_files_M67/radius5.csv")
+csv_x = data["g"] - data["r"]
+csv_y = data["r"]
+plt.plot(csv_x, csv_y, "b.")
+
+plt.xlabel("g - r")
+plt.ylabel("r")
+plt.title("Isochrone CMD Comparison")
+plt.gca().invert_yaxis()
+plt.show()
+
+# # Try plotting the sample isochrome
+# x = iso["LogL/Lo"]
+# y = iso["LogTeff"]
+# plt.scatter(x, y, s = 10)
+# plt.xlabel("LogL/Lo")
+# plt.ylabel("LogTeff")
+# plt.title("Isochrone plotted as HR diagram using luminosity and temperature")
+# plt.show()
