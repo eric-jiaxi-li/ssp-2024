@@ -1,5 +1,10 @@
 # https://canvas.instructure.com/courses/9410180/assignments/48000863?module_item_id=112668832
 
+
+# Suppress FutureWarning delim_whitespace = True
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
+
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
@@ -16,23 +21,23 @@ SELECT TOP 500000 p.objid, p.ra, p.dec, p.u, p.g,p.r,p.i,p.z,
    FROM fGetNearbyObjEq(132.84545,11.81371,3) n, PhotoPrimary p
    WHERE n.objID=p.objID and p.type=6
 """
-for i in range(1, 6):
-   data = pd.read_csv("sdss_project/csv_files_M67/radius{}.csv".format(i))
+# for i in range(1, 6):
+#    data = pd.read_csv("sdss_project/csv_files_M67/radius{}.csv".format(i))
 
-   # Apparent magnitude on y, color on x
-   x = data["g"] - data["r"]
-   y = data["r"] 
+#    # Apparent magnitude on y, color on x
+#    x = data["g"] - data["r"]
+#    y = data["r"] 
    
-   # Create plot
-   plt.scatter(x, y, s = 10)
-   plt.xlabel("g - r")
-   plt.ylabel("r")
-   plt.title("Color-magnitude diagram, radius {} around M67 cluster".format(i))
-   plt.xlim(-4, 6)
-   plt.ylim(25, 10) # Reverse y-axis
+#    # Create plot
+#    plt.scatter(x, y, s = 10)
+#    plt.xlabel("g - r")
+#    plt.ylabel("r")
+#    plt.title("Color-magnitude diagram, radius {} around M67 cluster".format(i))
+#    plt.xlim(-4, 6)
+#    plt.ylim(25, 10) # Reverse y-axis
 
-   # plt.show()
-   plt.savefig("sdss_project/plots_M67/radius{}.png".format(i))
+#    # plt.show()
+#    plt.savefig("sdss_project/plots_M67/radius{}.png".format(i))
 
 
 """
@@ -43,3 +48,6 @@ METALLICITY: https://arxiv.org/abs/1310.6297 Based on theoretical models the dif
 initial metallicity of M67 is estimated to be [Fe/H] = +0.06.
 AGE: "Generating an Isochrone" says 2e8 years
 """
+
+iso = pd.read_table("sdss_project/isochrone_M67.txt", delim_whitespace = True, skiprows = 8)
+x = iso["LogL/Lo"]
