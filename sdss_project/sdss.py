@@ -49,7 +49,7 @@ initial metallicity of M67 is estimated to be [Fe/H] = +0.06.
 AGE: "Generating an Isochrone" says 2e8 years
 """
 # Superimpose Isochrone and Color-magnitude diagram (CMD)
-iso = pd.read_table("sdss_project/isochrone_M67.txt", delim_whitespace = True, skiprows = 8)
+iso = pd.read_table("sdss_project/isochrones_M67/isochrone_0.2.txt", delim_whitespace = True, skiprows = 8)
 iso_x = iso["sdss_g"] - iso["sdss_r"]
 iso_y = iso["sdss_r"]
 plt.plot(iso_x, iso_y, "r.")
@@ -61,7 +61,8 @@ plt.plot(csv_x, csv_y, "b.")
 
 plt.xlabel("g - r")
 plt.ylabel("r")
-plt.title("Isochrone CMD Comparison")
+plt.title("Isochrone (0.2 Gy) CMD Comparison")
+plt.xlim(-3, 5)
 plt.gca().invert_yaxis()
 plt.show()
 
