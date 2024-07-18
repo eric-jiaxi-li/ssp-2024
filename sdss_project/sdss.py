@@ -33,3 +33,13 @@ for i in range(1, 6):
 
    # plt.show()
    plt.savefig("sdss_project/plots_M67/radius{}.png".format(i))
+
+
+"""
+Work with radius 5 only for now
+https://voyages.sdss.org/expeditions/expedition-to-the-milky-way/star-clusters/distance-modulus/
+Producing isochrome: metallicity and age
+METALLICITY: https://arxiv.org/abs/1310.6297 Based on theoretical models the diffusion-corrected 
+initial metallicity of M67 is estimated to be [Fe/H] = +0.06.
+AGE: "Generating an Isochrone" says 2e8 years
+"""
