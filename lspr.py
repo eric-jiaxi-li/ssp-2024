@@ -27,26 +27,10 @@ debug = True
 # print("Uncertainties RA {} DEC {}".format(sigma_RA, sigma_DEC))
 # print("RA {} DEC {}".format(RA, DEC))
 
-
-b1, b2, a11, a12, a21, a22, sigma_RA, sigma_DEC, RA, DEC = odlib.lspr("inputs/LCO_found_1_input.txt", 1235, 1193, True)
+# 06/27 LCO
+b1, b2, a11, a12, a21, a22, sigma_RA, sigma_DEC, RA, DEC = odlib.lspr("inputs/LCO_0627_input.txt", 1235.5, 1168.5, True)
 print()
-print("----------LSPR RESULTS 1, OUR ASTEROID----------")
-print("Plate constants b1 {} b2 {} a11 {} a12 {} a21 {} a22 {} ".format(b1, b2, a11, a12, a21, a22))
-print("Uncertainties RA {} DEC {}".format(sigma_RA, sigma_DEC))
-print("RA {} DEC {}".format(RA, DEC))
-
-# Plate constants b1 276.83550283573186 b2 8.602538271696794 a11 -0.00020906207401316646 a12 4.996067777501967e-07 a21 4.960822802029037e-07 a22 0.00020657066650725745
-# Uncertainties RA 0.002782904700978816 DEC 0.0018046091182027507
-# RA 18.0 hours 26.0 minutes 18.697729 seconds  DEC 8 degrees 50 arcminutes 58.523058 arcseconds
-
-
-print()
-print()
-print()
-
-b1, b2, a11, a12, a21, a22, sigma_RA, sigma_DEC, RA, DEC = odlib.lspr("inputs/LCO_found_2_input.txt", 1235.5, 1168.5, True)
-print()
-print("----------LSPR RESULTS 2, OUR ASTEROID----------")
+print("----------LCO LSPR 06/27----------")
 print("Plate constants b1 {} b2 {} a11 {} a12 {} a21 {} a22 {} ".format(b1, b2, a11, a12, a21, a22))
 print("Uncertainties RA {} DEC {}".format(sigma_RA, sigma_DEC))
 print("RA {} DEC {}".format(RA, DEC))
@@ -55,6 +39,24 @@ print("RA {} DEC {}".format(RA, DEC))
 # Plate constants b1 270.99132794536087 b2 12.280544103025175 a11 -0.00021158175938146845 a12 7.054114007916581e-07 a21 6.164485238040858e-07 a22 0.00020662850034496415
 # Uncertainties RA 0.0141631310323522 DEC 0.30669045765817193
 # RA 18.0 hours 2.0 minutes 55.378309 seconds  DEC 12 degrees 31 arcminutes 21.90406 arcseconds
+
+print()
+print()
+print()
+
+
+
+# 07/10 LCO
+b1, b2, a11, a12, a21, a22, sigma_RA, sigma_DEC, RA, DEC = odlib.lspr("inputs/LCO_0710_input.txt", 1235, 1193, True)
+print()
+print("----------LCO LSPR 07/10----------")
+print("Plate constants b1 {} b2 {} a11 {} a12 {} a21 {} a22 {} ".format(b1, b2, a11, a12, a21, a22))
+print("Uncertainties RA {} DEC {}".format(sigma_RA, sigma_DEC))
+print("RA {} DEC {}".format(RA, DEC))
+
+# Plate constants b1 276.83550283573186 b2 8.602538271696794 a11 -0.00020906207401316646 a12 4.996067777501967e-07 a21 4.960822802029037e-07 a22 0.00020657066650725745
+# Uncertainties RA 0.002782904700978816 DEC 0.0018046091182027507
+# RA 18.0 hours 26.0 minutes 18.697729 seconds  DEC 8 degrees 50 arcminutes 58.523058 arcseconds
 
 
 
