@@ -55,12 +55,20 @@ print("Catalog magnitude: {} +/- {}".format(m_catalog, sigma_m_catalog))
 # Avg offset between catalog/instrumental magnitudes 25.226792258347544
 # Systematic uncertainty dm 1.2571310227683492
 # Catalog magnitude: 16.7496166170423 +/- 1.2585661989726786
+# CORRECT: 2024-Jul-10 01:26 *m  18 25 22.56 +09 01 29.9   16.676    n.a.  355.1605
 
 
 
+# LCO_found_2
+C, m_catalog, dm, sigma_m_catalog = odlib.diff_photometry("input_images/LCO2_elp0m414-sq31-20240627-0152-e91.fits.fz", "inputs/LCO_found_2_photoinput.txt", 1236, 1169)
+print("Avg offset between catalog/instrumental magnitudes", C)
+print("Systematic uncertainty dm", dm)
+print("Catalog magnitude: {} +/- {}".format(m_catalog, sigma_m_catalog))
 
-
-
+# Avg offset between catalog/instrumental magnitudes 25.377139331378544
+# Systematic uncertainty dm 1.3093429859047634
+# Catalog magnitude: 16.97657335810678 +/- 1.310997343298532 
+# CORRECT: 2024-Jun-27 01:52 *   18 00 51.77 +12 44 08.2   16.958    n.a.  343.7258
 
 
 

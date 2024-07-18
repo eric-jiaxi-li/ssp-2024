@@ -58,22 +58,22 @@ AGE: "Generating an Isochrone" says 2e8 years
 # plt.show()
 
 # # Superimpose Isochrone and Color-magnitude diagram (CMD)
-# iso = pd.read_table("sdss_project/isochrones_M67/isochrone_0.2.txt", delim_whitespace = True, skiprows = 8)
-# iso_x = iso["sdss_g"] - iso["sdss_r"]
-# iso_y = iso["sdss_r"]
-# plt.plot(iso_x, iso_y, "r.")
+iso = pd.read_table("sdss_project/isochrones_M67/isochrone_0.2.txt", delim_whitespace = True, skiprows = 8)
+iso_x = iso["sdss_g"] - iso["sdss_r"]
+iso_y = iso["sdss_r"]
+plt.plot(iso_x, iso_y, "r.")
 
-# data = pd.read_csv("sdss_project/csv_files_M67/radius5.csv")
-# csv_x = data["g"] - data["r"]
-# csv_y = data["r"]
-# plt.plot(csv_x, csv_y, "b.")
+data = pd.read_csv("sdss_project/csv_files_M67/radius5.csv")
+csv_x = data["g"] - data["r"]
+csv_y = data["r"]
+plt.plot(csv_x, csv_y, "b.")
 
-# plt.xlabel("g - r")
-# plt.ylabel("r")
-# plt.title("Isochrone (0.2 Gy) CMD Comparison")
-# plt.xlim(-3, 5)
-# plt.gca().invert_yaxis()
-# plt.show()
+plt.xlabel("g - r")
+plt.ylabel("r")
+plt.title("Isochrone (0.2 Gy) CMD Comparison")
+plt.xlim(-3, 5)
+plt.gca().invert_yaxis()
+plt.show()
 
 mu = 9.5 # Distance modulus to convert to abs. mag, found by eyeballing using above plots
 
