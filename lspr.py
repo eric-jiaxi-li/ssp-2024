@@ -35,6 +35,11 @@ print("Plate constants b1 {} b2 {} a11 {} a12 {} a21 {} a22 {} ".format(b1, b2, 
 print("Uncertainties RA {} DEC {}".format(sigma_RA, sigma_DEC))
 print("RA {} DEC {}".format(RA, DEC))
 
+# Plate constants b1 276.83550283573186 b2 8.602538271696794 a11 -0.00020906207401316646 a12 4.996067777501967e-07 a21 4.960822802029037e-07 a22 0.00020657066650725745
+# Uncertainties RA 0.002782904700978816 DEC 0.0018046091182027507
+# RA 18.0 hours 26.0 minutes 18.697729 seconds  DEC 8 degrees 50 arcminutes 58.523058 arcseconds
+
+
 print()
 print()
 print()

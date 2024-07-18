@@ -20,26 +20,41 @@ from statistics import stdev
 
 debug = False
 
-print("----------1. Aperture Photometry----------")
+# print("----------1. Aperture Photometry----------")
 
-S, sigma_S, SNR, m_inst, sigma_m_inst = odlib.photometry("input_images/aptest.fit", 490, 293, 5, 8, 13, 11, 10, 1)
-print("Signal: {} +/- {} (ADU)".format(S, sigma_S))
-print("Signal-to-noise ratio: {}".format(SNR))
-print("Instrumental magnitude: {} +/- {}".format(m_inst, sigma_m_inst))
-print()
-print()
-print()
+# S, sigma_S, SNR, m_inst, sigma_m_inst = odlib.photometry("input_images/aptest.fit", 490, 293, 5, 8, 13, 11, 10, 1)
+# print("Signal: {} +/- {} (ADU)".format(S, sigma_S))
+# print("Signal-to-noise ratio: {}".format(SNR))
+# print("Instrumental magnitude: {} +/- {}".format(m_inst, sigma_m_inst))
+# print()
+# print()
+# print()
 
-print("----------2. Differential Photometry----------")
+# print("----------2. Differential Photometry----------")
 
-C, m_catalog, dm, sigma_m_catalog = odlib.diff_photometry("input_images/diff_phot.fit", "inputs/photometry_stars_test.txt", 546, 327)
+# C, m_catalog, dm, sigma_m_catalog = odlib.diff_photometry("input_images/diff_phot.fit", "inputs/photometry_stars_test.txt", 546, 327)
+# print("Avg offset between catalog/instrumental magnitudes", C)
+# print("Systematic uncertainty dm", dm)
+# print("Catalog magnitude: {} +/- {}".format(m_catalog, sigma_m_catalog))
+
+
+
+
+######################################################
+#
+#              Photometry on our data
+#
+######################################################
+
+# LCO_found_1
+C, m_catalog, dm, sigma_m_catalog = odlib.diff_photometry("input_images/LCO1_coj0m416-sq36-20240710-0126-e91.fits.fz", "inputs/LCO_found_1_photoinput.txt", 1233.64, 1191.97)
 print("Avg offset between catalog/instrumental magnitudes", C)
 print("Systematic uncertainty dm", dm)
 print("Catalog magnitude: {} +/- {}".format(m_catalog, sigma_m_catalog))
 
-
-
-
+# Avg offset between catalog/instrumental magnitudes 25.226792258347544
+# Systematic uncertainty dm 1.2571310227683492
+# Catalog magnitude: 16.7496166170423 +/- 1.2585661989726786
 
 
 
