@@ -79,7 +79,7 @@ print()
 
 # LCO 07/17
 C, m_catalog, dm, sigma_m_catalog = odlib.diff_photometry("input_images/LCO_0717_ogg0m463-sq40-20240717-0413-e91.fits.fz", "inputs/LCO_0717_photoinput.txt", 1231.699, 1162.4194)
-print("----------LCO 07/10 PHOTOMETRY----------")
+print("----------LCO 07/17 PHOTOMETRY----------")
 print("Avg offset between catalog/instrumental magnitudes", C)
 print("Systematic uncertainty dm", dm)
 print("Catalog magnitude: {} +/- {}".format(m_catalog, sigma_m_catalog))

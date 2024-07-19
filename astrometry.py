@@ -28,7 +28,7 @@ debug = True
 # print("RA {} DEC {}".format(RA, DEC))
 
 # 06/27 LCO
-b1, b2, a11, a12, a21, a22, sigma_RA, sigma_DEC, RA, DEC = odlib.lspr("inputs/LCO_0627_input.txt", 1235.5, 1168.5, True)
+b1, b2, a11, a12, a21, a22, sigma_RA, sigma_DEC, RA, DEC = odlib.lspr("inputs/LCO_0627_astroinput.txt", 1235.5, 1168.5, True)
 print()
 print("----------LCO LSPR 06/27----------")
 print("Plate constants b1 {} b2 {} a11 {} a12 {} a21 {} a22 {} ".format(b1, b2, a11, a12, a21, a22))
@@ -47,7 +47,7 @@ print()
 
 
 # 07/10 LCO
-b1, b2, a11, a12, a21, a22, sigma_RA, sigma_DEC, RA, DEC = odlib.lspr("inputs/LCO_0710_input.txt", 1235, 1193, True)
+b1, b2, a11, a12, a21, a22, sigma_RA, sigma_DEC, RA, DEC = odlib.lspr("inputs/LCO_0710_astroinput.txt", 1235, 1193, True)
 print()
 print("----------LCO LSPR 07/10----------")
 print("Plate constants b1 {} b2 {} a11 {} a12 {} a21 {} a22 {} ".format(b1, b2, a11, a12, a21, a22))
@@ -58,10 +58,13 @@ print("RA {} DEC {}".format(RA, DEC))
 # Uncertainties RA 0.002782904700978816 DEC 0.0018046091182027507
 # RA 18.0 hours 26.0 minutes 18.697729 seconds  DEC 8 degrees 50 arcminutes 58.523058 arcseconds
 
+print()
+print()
+print()
 
 
 # 07/17 LCO
-b1, b2, a11, a12, a21, a22, sigma_RA, sigma_DEC, RA, DEC = odlib.lspr("inputs/LCO_0717_input.txt", 1231.4669, 1163.0577, True)
+b1, b2, a11, a12, a21, a22, sigma_RA, sigma_DEC, RA, DEC = odlib.lspr("inputs/LCO_0717_astroinput.txt", 1231.4669, 1163.0577, True)
 print()
 print("----------LCO LSPR 07/17----------")
 print("Plate constants b1 {} b2 {} a11 {} a12 {} a21 {} a22 {} ".format(b1, b2, a11, a12, a21, a22))
@@ -74,9 +77,17 @@ print("RA {} DEC {}".format(RA, DEC))
 
 
 
+# 07/12 TMO, data from Erin
+b1, b2, a11, a12, a21, a22, sigma_RA, sigma_DEC, RA, DEC = odlib.lspr("inputs/TMO_0712_astroinput.txt", 2464.9864, 1355.9351, True)
+print()
+print("----------TMO LSPR 07/12----------")
+print("Plate constants b1 {} b2 {} a11 {} a12 {} a21 {} a22 {} ".format(b1, b2, a11, a12, a21, a22))
+print("Uncertainties RA {} DEC {}".format(sigma_RA, sigma_DEC))
+print("RA {} DEC {}".format(RA, DEC))
 
-
-
+# Plate constants b1 277.7517143993415 b2 7.73772768689456 a11 0.00012501440420201748 a12 6.845266710612474e-09 a21 -1.7899939048483334e-05 a22 -2.1712732703882842e-06
+# Uncertainties RA 1.2235610404053925 DEC 65.63732948144786
+# RA 18.0 hours 32.0 minutes 14.371797 seconds  DEC 7 degrees 41 arcminutes 26.37771 arcseconds
 
 
 
