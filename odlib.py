@@ -807,7 +807,68 @@ def get_fg(tau1, tau3, r2, r2_dot, order = 4):
 
 
 
+def get_orbital_elements(x, y, z, vx, vy, vz):
+    """
+    Params: in AU and days, the position vector x, y, z and the velocity
+            vector vx, vy, vz. 
+    Return: All 6 orbital elements in AU and degrees
+    """
 
+    # Convert to Gaussian days
+    k_Gauss = 0.0172020989484
+    mu = 1 # mu = G * M_sun = 1 in Gaussian days/AU
+
+    vx /= k_Gauss
+    vy /= k_Gauss
+    vz /= k_Gauss
+
+    r_vec = np.array([x, y, z]) # AU
+    r_dot_vec = np.array([vx, vy, vz]) # AU/GD
+    r = mag(r_vec)
+
+
+    # Semimajor axis
+    a = 1 / (2 / r - np.dot(r_dot_vec, r_dot_vec) / mu)
+
+
+    # Eccentricity
+    e = np.sqrt(1 - mag(np.cross(r_vec, r_dot_vec))**2 / (mu * a))
+
+
+    # Inclination
+    h = np.cross(r_vec, r_dot_vec) # Angular momentum
+    i = degrees(acos(h[2] / mag(h)))
+
+
+    # Longitude of ascending node
+    sin_omega = h[0] / (mag(h) * sin(radians(i)))
+    cos_omega = -h[1] / (mag(h) * sin(radians(i)))
+    omega = quadrant_deg(sin_omega, cos_omega)
+
+
+    # Argument of periapsis
+    sin_nu = a / mag(h) * (1 - e**2) / e * np.dot(r_vec, r_dot_vec) / r
+    cos_nu = 1 / e * (a * (1 - e**2) / r - 1)
+
+    sin_u = r_vec[2] / (r * sin(radians(i)))
+    cos_u = (r_vec[0] * cos(radians(omega)) + r_vec[1] * sin(radians(omega))) / r
+
+    nu = quadrant_deg(sin_nu, cos_nu)
+    u = quadrant_deg(sin_u, cos_u)
+    w = (u - nu) % 360.0
+
+
+    # Mean anomaly
+    E = -1
+    if 0 <= nu and nu < 180:
+        E = acos(1 / e * (1 - r / a))
+    elif 180 <= nu and nu < 360:
+        E = 2 * pi - acos(1 / e * (1 - r / a))
+    M = degrees(E - e * sin(E)) % 360
+    
+
+
+    return a, e, i, omega, w, M
 
 
 
