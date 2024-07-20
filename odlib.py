@@ -773,7 +773,37 @@ def gen_eph(text_file, sun_vec, earth_tilt_deg, eph_Y, eph_M, eph_D, obs_Y, obs_
 
 
 
+def get_fg(tau1, tau3, r2, r2_dot, order = 4):
+    """
+    Params: See OD Guide. 3rd or 4th order
+            approximation, 3 or 4
+            Functions not necessary, says Dr. F
+    Return: values of f1, f3, g1, g3
+    """
 
+    r2_mag = mag(r2)
+    u = 1 / (r2_mag ** 3)
+    z = np.dot(r2, r2_dot) / (r2_mag ** 2)
+    q = np.dot(r2_dot, r2_dot) / (r2_mag ** 2) - u
+
+
+    if order == 3:
+        f1 = 1 - 1/2*u*tau1**2 + 1/2*u*z*tau1**3
+        f3 = 1 - 1/2*u*tau3**2 + 1/2*u*z*tau3**3
+        g1 = tau1 - 1/6*u*tau1**3
+        g3 = tau3 - 1/6*u*tau3**3
+
+    elif order == 4:
+        f1 = 1 - 1/2*u*tau1**2 + 1/2*u*z*tau1**3 + 1/24*(3*u*q-15*u*z**2+u**2)*tau1**4
+        f3 = 1 - 1/2*u*tau3**2 + 1/2*u*z*tau3**3 + 1/24*(3*u*q-15*u*z**2+u**2)*tau3**4
+        g1 = tau1 - 1/6*u*tau1**3 + 1/4*u*z*tau1**4
+        g3 = tau3 - 1/6*u*tau3**3 + 1/4*u*z*tau3**4
+
+    else:
+        raise Exception("Invalid order: only 3 and 4 allowed")
+    
+
+    return f1, f3, g1, g3
 
 
 
