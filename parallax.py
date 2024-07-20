@@ -9,7 +9,7 @@ import odlib
 from scipy.stats import linregress
 from math import *
 
-debug = True
+debug = False
 
 
 ######################################################
@@ -142,6 +142,6 @@ y = sqrt(((H_x_rad - H_y_rad) * cos(delta_x_rad)) ** 2 + (delta_x_rad - delta_y_
 d = (odlib.mag(C) * sin(theta)) / (2 * tan(y / 2)) * 6.6845871226706E-9
 d_JPL = 0.26998734316940
 
-odlib.check_error(d, d_JPL, "Distance to asteroid in AU") # 9% error
+odlib.check_error(d, d_JPL, "Distance to asteroid in AU") # 9.74% error
 
 
