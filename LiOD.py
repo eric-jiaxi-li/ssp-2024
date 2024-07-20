@@ -21,15 +21,15 @@ def mog(input_file):
     #
     ######################################################
 
-    rho_hat1 = np.array([-1, -1, -1]) # Earth-asteroid direction vectors
-    rho_hat2 = np.array([-1, -1, -1])
-    rho_hat3 = np.array([-1, -1, -1])
-    R1 = np.array([-1, -1, -1]) # Earth-sun vectors
-    R2 = np.array([-1, -1, -1])
-    R3 = np.array([-1, -1, -1])
-    t1 = -1 # Observation time in Julian days
-    t2 = -1
-    t3 = -1
+    # rho_hat1 = np.array([-1, -1, -1]) # Earth-asteroid direction vectors
+    # rho_hat2 = np.array([-1, -1, -1])
+    # rho_hat3 = np.array([-1, -1, -1])
+    # R1 = np.array([-1, -1, -1]) # Earth-sun vectors
+    # R2 = np.array([-1, -1, -1])
+    # R3 = np.array([-1, -1, -1])
+    # t1 = -1 # Observation time in Julian days
+    # t2 = -1
+    # t3 = -1
 
 
     curr_line_number = 1
