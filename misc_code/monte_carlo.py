@@ -1,3 +1,5 @@
+# Checked by Dr. F
+
 from vpython import *
 import numpy as np
 import random
@@ -10,7 +12,7 @@ debug = False
 
 run_brownian = False
 run_hypersphere = False
-run_dla = True
+run_dla = False
 
 """
 1. Brownian Motion
@@ -149,7 +151,8 @@ if run_brownian == True:
     print("Brownian motion stopped")
 print()
 if run_hypersphere == True:
-    print("Hypersphere volume", volume_hypersphere(1, 10))
+    for i in range(3, 15):
+        print("Hypersphere volume {} dim".format(i), volume_hypersphere(2, i))
 print()
 if run_dla == True:
     print("Running DLA...")
