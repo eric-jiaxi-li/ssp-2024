@@ -75,6 +75,18 @@ def check_error(my_val, true_val, var_name, threshold = 0.02):
 #
 ######################################################
 
+def time_string_to_decimals(time_string):
+    """
+    https://stackoverflow.com/questions/15208516/convert-a-time-string-into-a-decimal-number-of-hours
+    """
+    fields = time_string.split(":")
+    hours = fields[0] if len(fields) > 0 else 0.0
+    minutes = fields[1] if len(fields) > 1 else 0.0
+    seconds = fields[2] if len(fields) > 2 else 0.0
+    return float(hours) + (float(minutes) / 60.0) + float(seconds) / pow(60.0, 2)
+
+
+
 def quadrant_deg(sin_val, cos_val):
     """
     Params: Sine/cosine values of an angle
@@ -188,12 +200,12 @@ def DEC_decimal_to_DMS(DEC):
 
 
 
-def julian(Y, M, D):
+def julian(Y, M, D, T = 0):
     """
-    Params: Year, Month, Day
-    Return: Julian date at 0 UTC of that time
+    Params: Year, Month, Day, Time in decimal hours
+    Return: Julian date at that time
     """
-    return 367*Y - 7 * (Y + (M+9)//12)//4 + (275*M)//9 + D + 1721013.5
+    return 367*Y - 7 * (Y + (M+9)//12)//4 + (275*M)//9 + D + 1721013.5 + 360.985647366 * T / 24
 
 
 
