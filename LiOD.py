@@ -8,37 +8,78 @@ import odlib
 
 debug = False
 
-r2, r_dot2 = odlib.mog("inputs/LiInput_MOG.txt")
-print("MOG output, ecliptic:", r2, r_dot2)
+
+######################################################
+#
+#                  MOG on 2012 FN62
+#
+######################################################
+
+"""
+Observation times:
+2024-06-28 08:15:21 = 2460489.843993 ELP aqwa
+2024-07-10 12:00:16 = 2460502.000185 Q58 
+- (wasn't able to find exact on JPL, used 413)
+2024-07-18 12:24:29 = 2460510.017002 OGG
+"""
+
+r2, r_dot2 = odlib.mog("inputs/2012FN62_MOGinput.txt")
+print("2012FN62 vectors at 2024-07-10 12:00:16:", r2, r_dot2)
+print("Orbital elements at this time:")
+a, e, i, omega, w, m = odlib.get_orbital_elements(r2[0], r2[1], r2[2], r_dot2[0], r_dot2[1], r_dot2[2])
+
+# 2460502.000185000 = A.D. 2024-Jul-10 12:00:15.9840 TDB 
+#  EC= 6.162095989777298E-01 QR= 1.252863662837021E+00 IN= 1.000625206112275E+01
+#  OM= 1.479906043977145E+02 W = 1.424191318807842E+02 Tp=  2460506.980212359689
+#  N = 1.671050275387466E-01 MA= 3.591678123908871E+02 TA= 3.555537239548167E+02
+#  A = 3.264447624275831E+00 AD= 5.276031585714641E+00 PR= 2.154333746281372E+03
+
 print()
-print(odlib.get_orbital_elements(r2[0], r2[1], r2[2], r_dot2[0], r_dot2[1], r_dot2[2]))
+print("ALL ELEMENTS CORRECT WITH UNDER 1% ERROR (2012 FN62)")
+odlib.check_error(a, 3.264447624275831E+00, "a", threshold = 1)
+odlib.check_error(e, 6.162095989777298E-01, "e", threshold = 1)
+odlib.check_error(i, 1.000625206112275E+01, "i", threshold = 1)
+odlib.check_error(omega, 1.479906043977145E+02, "omega", threshold = 1)
+odlib.check_error(w, 1.424191318807842E+02, "w", threshold = 1)
+odlib.check_error(m, 3.591678123908871E+02, "m", threshold = 1)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# r2, r_dot2 = odlib.mog("inputs/LiInput_MOG.txt")
+# print("MOG output, ecliptic:", r2, r_dot2)
+# print(odlib.get_orbital_elements(r2[0], r2[1], r2[2], r_dot2[0], r_dot2[1], r_dot2[2]))
 
 """
 CORRECT: 
 Semimajor axis 2.30430 AU
-
 Eccentricity 0.54791
-
 Inclination 3.2412 degrees
-
 Longitude of the Ascending Node: 213.218 degrees
-
 Argument of the Perihelion: 98.1439 degrees
-
 Mean Anomaly at t2: 350.07 degrees
 """
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

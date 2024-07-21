@@ -62,13 +62,6 @@ def check_error(my_val, true_val, var_name, threshold = 0.02):
 
 
 
-
-
-
-
-
-
-
 ######################################################
 #
 #              Unit and trig conversions
