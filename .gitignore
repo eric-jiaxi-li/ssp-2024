@@ -1,3 +1,4 @@
-input_images/
 __pycache__/
-found_asteroid/
+inputs/2012FN62/datasets/
+inputs/images/
+datasets/
