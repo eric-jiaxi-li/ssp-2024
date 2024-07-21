@@ -39,10 +39,7 @@ def mog(input_file):
         sun_vec = np.array([sun_vec_0, sun_vec_1, sun_vec_2]).astype(np.float64)
 
         # if debug == True:
-        #     print("Julian day of observation:", T)
         #     print("RA/DEC", RA, DEC)
-        #     print("Sun vector", sun_vec)
-        #     print()
 
         # Assign inputs to the right variables
         if curr_line_number == 1:
@@ -65,10 +62,11 @@ def mog(input_file):
     t02 = t2
     t03 = t3
 
-    if debug == True:
-        print(t1, R1)
-        print(t2, R2)
-        print(t3, R3)
+    # if debug == True:
+    #     print(rho_hat2)
+    #     print(t1, R1)
+    #     print(t2, R2)
+    #     print(t3, R3)
 
 
 
@@ -147,18 +145,20 @@ def mog(input_file):
         t2 = t02 - rho2 / c_AU
         t3 = t03 - rho3 / c_AU
 
-        if debug == True:
-            print(r2, r_dot2)
+        # if debug == True:
+        #     print(r2, r_dot2)
 
-        if odlib.mag(r2 - last_iteration_r2) + odlib.mag(r_dot2 - last_iteration_r_dot2) < 1e-4:
-            return r2, r_dot2 * k_Gauss # get_orbital_elements requires days, not Gaussian days
+        if odlib.mag(r2 - last_iteration_r2) + odlib.mag(r_dot2 - last_iteration_r_dot2) < 1e-8:
+            # Convert to ecliptic coordinates
+            tilt_spin = np.linalg.inv(np.array([[1, 0, 0], 
+                                                [0, cos(eps), -sin(eps)], 
+                                                [0, sin(eps), cos(eps)]]))
+            return tilt_spin @ r2, tilt_spin @ (r_dot2 * k_Gauss) # get_orbital_elements requires days, not Gaussian days
         else:
             last_iteration_r2 = np.copy(r2)
             last_iteration_r_dot2 = np.copy(r_dot2)
 
 r2, r_dot2 = mog("inputs/LiInput_MOG.txt")
-print("MOG output:", r2, r_dot2)
-print("EXPECTED: -5.978774781408763E-01 1.525350867619433E+00 3.757408106431547E-01")
-print("EXPECTED: -3.557893287557221E-02 -1.490261209665643E-02 -1.114545285386681E-02")
+print("MOG output, ecliptic:", r2, r_dot2)
 print()
 print(odlib.get_orbital_elements(r2[0], r2[1], r2[2], r_dot2[0], r_dot2[1], r_dot2[2]))
