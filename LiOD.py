@@ -21,17 +21,6 @@ def mog(input_file):
     #
     ######################################################
 
-    # rho_hat1 = np.array([-1, -1, -1]) # Earth-asteroid direction vectors
-    # rho_hat2 = np.array([-1, -1, -1])
-    # rho_hat3 = np.array([-1, -1, -1])
-    # R1 = np.array([-1, -1, -1]) # Earth-sun vectors
-    # R2 = np.array([-1, -1, -1])
-    # R3 = np.array([-1, -1, -1])
-    # t1 = -1 # Observation time in Julian days
-    # t2 = -1
-    # t3 = -1
-
-
     curr_line_number = 1
     fin = open(input_file)
     for line in fin.readlines():
@@ -76,10 +65,10 @@ def mog(input_file):
     t02 = t2
     t03 = t3
 
-    # if debug == True:
-    #     print(t1, R1)
-    #     print(t2, R2)
-    #     print(t3, R3)
+    if debug == True:
+        print(t1, R1)
+        print(t2, R2)
+        print(t3, R3)
 
 
 
@@ -169,13 +158,7 @@ def mog(input_file):
 
 r2, r_dot2 = mog("inputs/LiInput_MOG.txt")
 print("MOG output:", r2, r_dot2)
+print("EXPECTED: -5.978774781408763E-01 1.525350867619433E+00 3.757408106431547E-01")
+print("EXPECTED: -3.557893287557221E-02 -1.490261209665643E-02 -1.114545285386681E-02")
 print()
 print(odlib.get_orbital_elements(r2[0], r2[1], r2[2], r_dot2[0], r_dot2[1], r_dot2[2]))
-
-# You should get the following orbital elements for this test case: 
-# Semimajor axis 2.30430 AU
-# Eccentricity 0.54791
-# Inclination 3.2412 degrees
-# Longitude of the Ascending Node: 213.218 degrees
-# Argument of the Perihelion: 98.1439 degrees
-# Mean Anomaly at t2: 350.07 degrees
