@@ -18,7 +18,7 @@ debug = True
 
 
 # Changed input parameters of given testcase
-centroid_x, centroid_y, sigma_x, sigma_y = odlib.find_centroid("input_images/sampleimage.fits", 351, 154, 4, 5, "mean")
+centroid_x, centroid_y, sigma_x, sigma_y = odlib.find_centroid("inputs/images/sampleimage.fits", 351, 154, 4, 5, "mean")
 print()
 print("Centroid {}, {}".format(centroid_x, centroid_y))
 print("Uncertainty {}, {}".format(sigma_x, sigma_y))
@@ -38,7 +38,7 @@ else:
 
 # Checking for sticker 530 299
 # Works
-print(odlib.find_centroid("input_images/sampleimage.fits", 530, 299, 3, 5, "mean"))
+print(odlib.find_centroid("inputs/images/sampleimage.fits", 530, 299, 3, 5, "mean"))
 
 
 #####################################################

@@ -22,7 +22,7 @@ SELECT TOP 500000 p.objid, p.ra, p.dec, p.u, p.g,p.r,p.i,p.z,
    WHERE n.objID=p.objID and p.type=6
 """
 # for i in range(1, 6):
-#    data = pd.read_csv("sdss_project/csv_files_M67/radius{}.csv".format(i))
+#    data = pd.read_csv("inputs/sdss_project/csv_files_M67/radius{}.csv".format(i))
 
 #    # Apparent magnitude on y, color on x
 #    x = data["g"] - data["r"]
@@ -37,7 +37,7 @@ SELECT TOP 500000 p.objid, p.ra, p.dec, p.u, p.g,p.r,p.i,p.z,
 #    plt.ylim(25, 10) # Reverse y-axis
 
 #    # plt.show()
-#    plt.savefig("sdss_project/plots_M67/radius{}.png".format(i))
+#    plt.savefig("inputs/sdss_project/plots_M67/radius{}.png".format(i))
 
 
 """
@@ -58,12 +58,12 @@ AGE: "Generating an Isochrone" says 2e8 years
 # plt.show()
 
 # # Superimpose Isochrone and Color-magnitude diagram (CMD)
-iso = pd.read_table("sdss_project/isochrones_M67/isochrone_0.2.txt", delim_whitespace = True, skiprows = 8)
+iso = pd.read_table("inputs/sdss_project/isochrones_M67/isochrone_0.2.txt", delim_whitespace = True, skiprows = 8)
 iso_x = iso["sdss_g"] - iso["sdss_r"]
 iso_y = iso["sdss_r"]
 plt.plot(iso_x, iso_y, "r.")
 
-data = pd.read_csv("sdss_project/csv_files_M67/radius5.csv")
+data = pd.read_csv("inputs/sdss_project/csv_files_M67/radius5.csv")
 csv_x = data["g"] - data["r"]
 csv_y = data["r"]
 plt.plot(csv_x, csv_y, "b.")
@@ -85,12 +85,12 @@ Try to match isochrone to scatterplot
 # https://www.google.com/search?q=m67+cluster+age&oq=m67+cluster+age&gs_lcrp=EgZjaHJvbWUyCggAEEUYFhgeGDkyDQgBEAAYhgMYgAQYigUyDQgCEAAYhgMYgAQYigUyDQgDEAAYhgMYgAQYigUyCggEEAAYgAQYogQyCggFEAAYgAQYogQyBggGEEUYPNIBCDE2MjFqMGoxqAIAsAIA&sourceid=chrome&ie=UTF-8
 radius_choice = 5 # 1, 2, 3, 4, or 5
 for age in [0.2, 4.0, 9.0, 10.0]:
-   iso = pd.read_table("sdss_project/isochrones_M67/isochrone_{}.txt".format(age), delim_whitespace = True, skiprows = 8)
+   iso = pd.read_table("inputs/sdss_project/isochrones_M67/isochrone_{}.txt".format(age), delim_whitespace = True, skiprows = 8)
    iso_x = iso["sdss_g"] - iso["sdss_r"]
    iso_y = iso["sdss_r"]
    plt.plot(iso_x, iso_y, color = "red")
 
-   data = pd.read_csv("sdss_project/csv_files_M67/radius{}.csv".format(radius_choice))
+   data = pd.read_csv("inputs/sdss_project/csv_files_M67/radius{}.csv".format(radius_choice))
    csv_x = data["g"] - data["r"]
    csv_y = data["r"] - mu
    plt.plot(csv_x, csv_y, "b.")

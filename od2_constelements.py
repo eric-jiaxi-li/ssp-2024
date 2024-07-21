@@ -134,4 +134,4 @@ def baby_od_const_elements(filename):
     check_error(omega, OM_true, "omega")
     check_error(w, W_true, "w")
 
-baby_od_const_elements("inputs/LiInput.txt")
+baby_od_const_elements("inputs/testcases/LiInput.txt")

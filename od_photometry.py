@@ -20,22 +20,22 @@ from statistics import stdev
 
 debug = False
 
-# print("----------1. Aperture Photometry----------")
+print("----------1. Aperture Photometry----------")
 
-# S, sigma_S, SNR, m_inst, sigma_m_inst = odlib.photometry("input_images/aptest.fit", 490, 293, 5, 8, 13, 11, 10, 1)
-# print("Signal: {} +/- {} (ADU)".format(S, sigma_S))
-# print("Signal-to-noise ratio: {}".format(SNR))
-# print("Instrumental magnitude: {} +/- {}".format(m_inst, sigma_m_inst))
-# print()
-# print()
-# print()
+S, sigma_S, SNR, m_inst, sigma_m_inst = odlib.photometry("inputs/images/aptest.fit", 490, 293, 5, 8, 13, 11, 10, 1)
+print("Signal: {} +/- {} (ADU)".format(S, sigma_S))
+print("Signal-to-noise ratio: {}".format(SNR))
+print("Instrumental magnitude: {} +/- {}".format(m_inst, sigma_m_inst))
+print()
+print()
+print()
 
-# print("----------2. Differential Photometry----------")
+print("----------2. Differential Photometry----------")
 
-# C, m_catalog, dm, sigma_m_catalog = odlib.diff_photometry("input_images/diff_phot.fit", "inputs/photometry_stars_test.txt", 546, 327)
-# print("Avg offset between catalog/instrumental magnitudes", C)
-# print("Systematic uncertainty dm", dm)
-# print("Catalog magnitude: {} +/- {}".format(m_catalog, sigma_m_catalog))
+C, m_catalog, dm, sigma_m_catalog = odlib.diff_photometry("inputs/images/diff_phot.fit", "inputs/testcases/Li_photometry_stars_test.txt", 546, 327)
+print("Avg offset between catalog/instrumental magnitudes", C)
+print("Systematic uncertainty dm", dm)
+print("Catalog magnitude: {} +/- {}".format(m_catalog, sigma_m_catalog))
 
 
 
@@ -47,7 +47,7 @@ debug = False
 ######################################################
 
 # LCO 06/27
-C, m_catalog, dm, sigma_m_catalog = odlib.diff_photometry("input_images/LCO_0627_elp0m414-sq31-20240627-0152-e91.fits.fz", "inputs/LCO_0627_photoinput.txt", 1236, 1169)
+C, m_catalog, dm, sigma_m_catalog = odlib.diff_photometry("inputs/images/LCO_0627_elp0m414-sq31-20240627-0152-e91.fits.fz", "inputs/2012FN62/LCO_0627_photoinput.txt", 1236, 1169)
 print("----------LCO 06/27 PHOTOMETRY----------")
 print("Avg offset between catalog/instrumental magnitudes", C)
 print("Systematic uncertainty dm", dm)
@@ -63,7 +63,7 @@ print()
 
 
 # LCO 07/10
-C, m_catalog, dm, sigma_m_catalog = odlib.diff_photometry("input_images/LCO_0710_coj0m416-sq36-20240710-0126-e91.fits.fz", "inputs/LCO_0710_photoinput.txt", 1233.64, 1191.97)
+C, m_catalog, dm, sigma_m_catalog = odlib.diff_photometry("inputs/images/LCO_0710_coj0m416-sq36-20240710-0126-e91.fits.fz", "inputs/2012FN62/LCO_0710_photoinput.txt", 1233.64, 1191.97)
 print("----------LCO 07/10 PHOTOMETRY----------")
 print("Avg offset between catalog/instrumental magnitudes", C)
 print("Systematic uncertainty dm", dm)
@@ -78,7 +78,7 @@ print()
 print()
 
 # LCO 07/17
-C, m_catalog, dm, sigma_m_catalog = odlib.diff_photometry("input_images/LCO_0717_ogg0m463-sq40-20240717-0413-e91.fits.fz", "inputs/LCO_0717_photoinput.txt", 1231.699, 1162.4194)
+C, m_catalog, dm, sigma_m_catalog = odlib.diff_photometry("inputs/images/LCO_0717_ogg0m463-sq40-20240717-0413-e91.fits.fz", "inputs/2012FN62/LCO_0717_photoinput.txt", 1231.699, 1162.4194)
 print("----------LCO 07/17 PHOTOMETRY----------")
 print("Avg offset between catalog/instrumental magnitudes", C)
 print("Systematic uncertainty dm", dm)

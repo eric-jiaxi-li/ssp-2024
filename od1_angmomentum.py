@@ -16,7 +16,7 @@ debug = False
 # Input format: X, Y, Z, VX, VY, VZ, LT, RG, RR
 # Units: AU and days (need to convert to Gaussian Days!)
 # Each value on a separate line
-fin = open("inputs/LiInput.txt")
+fin = open("inputs/testcases/LiInput.txt")
 x = float(fin.readline())
 y = float(fin.readline())
 z = float(fin.readline())

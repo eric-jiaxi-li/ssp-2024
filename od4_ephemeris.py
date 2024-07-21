@@ -45,7 +45,7 @@ use_jul_elements = True
 
 if use_jul_elements == True:
 
-    RA, DEC = odlib.gen_eph("inputs/LiInputElements20180714.txt", sun_vec, 23.4384987711, 2018, 8, 3, 2018, 7, 14) # Sun tilt from Dr. F
+    RA, DEC = odlib.gen_eph("inputs/testcases/LiInputElements20180714.txt", sun_vec, 23.4384987711, 2018, 8, 3, 2018, 7, 14) # Sun tilt from Dr. F
 
     # Astrometric, not apparent
     #  2018-Aug-03 00:00 *   17 42 21.20 +31 52 28.1  168.7875

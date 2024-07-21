@@ -20,15 +20,15 @@ debug = True
 
 
 
-# b1, b2, a11, a12, a21, a22, sigma_RA, sigma_DEC, RA, DEC = odlib.lspr("inputs/lspr_test.txt", 484.35, 382.62, True)
-# print()
-# print("----------LSPR RESULTS, TEST INPUT----------")
-# print("Plate constants b1 {} b2 {} a11 {} a12 {} a21 {} a22 {} ".format(b1, b2, a11, a12, a21, a22))
-# print("Uncertainties RA {} DEC {}".format(sigma_RA, sigma_DEC))
-# print("RA {} DEC {}".format(RA, DEC))
+b1, b2, a11, a12, a21, a22, sigma_RA, sigma_DEC, RA, DEC = odlib.lspr("inputs/testcases/Li_lspr_test.txt", 484.35, 382.62, True)
+print()
+print("----------LSPR RESULTS, TEST INPUT----------")
+print("Plate constants b1 {} b2 {} a11 {} a12 {} a21 {} a22 {} ".format(b1, b2, a11, a12, a21, a22))
+print("Uncertainties RA {} DEC {}".format(sigma_RA, sigma_DEC))
+print("RA {} DEC {}".format(RA, DEC))
 
 # 06/27 LCO
-b1, b2, a11, a12, a21, a22, sigma_RA, sigma_DEC, RA, DEC = odlib.lspr("inputs/LCO_0627_astroinput.txt", 1235.5, 1168.5, True)
+b1, b2, a11, a12, a21, a22, sigma_RA, sigma_DEC, RA, DEC = odlib.lspr("inputs/2012FN62/LCO_0627_astroinput.txt", 1235.5, 1168.5, True)
 print()
 print("----------LCO LSPR 06/27----------")
 print("Plate constants b1 {} b2 {} a11 {} a12 {} a21 {} a22 {} ".format(b1, b2, a11, a12, a21, a22))
@@ -47,7 +47,7 @@ print()
 
 
 # 07/10 LCO
-b1, b2, a11, a12, a21, a22, sigma_RA, sigma_DEC, RA, DEC = odlib.lspr("inputs/LCO_0710_astroinput.txt", 1235, 1193, True)
+b1, b2, a11, a12, a21, a22, sigma_RA, sigma_DEC, RA, DEC = odlib.lspr("inputs/2012FN62/LCO_0710_astroinput.txt", 1235, 1193, True)
 print()
 print("----------LCO LSPR 07/10----------")
 print("Plate constants b1 {} b2 {} a11 {} a12 {} a21 {} a22 {} ".format(b1, b2, a11, a12, a21, a22))
@@ -64,7 +64,7 @@ print()
 
 
 # 07/17 LCO
-b1, b2, a11, a12, a21, a22, sigma_RA, sigma_DEC, RA, DEC = odlib.lspr("inputs/LCO_0717_astroinput.txt", 1231.4669, 1163.0577, True)
+b1, b2, a11, a12, a21, a22, sigma_RA, sigma_DEC, RA, DEC = odlib.lspr("inputs/2012FN62/LCO_0717_astroinput.txt", 1231.4669, 1163.0577, True)
 print()
 print("----------LCO LSPR 07/17----------")
 print("Plate constants b1 {} b2 {} a11 {} a12 {} a21 {} a22 {} ".format(b1, b2, a11, a12, a21, a22))
@@ -78,7 +78,7 @@ print("RA {} DEC {}".format(RA, DEC))
 
 
 # 07/12 TMO, data from Erin
-b1, b2, a11, a12, a21, a22, sigma_RA, sigma_DEC, RA, DEC = odlib.lspr("inputs/TMO_0712_astroinput.txt", 2464.9864, 1355.9351, True)
+b1, b2, a11, a12, a21, a22, sigma_RA, sigma_DEC, RA, DEC = odlib.lspr("inputs/2012FN62/TMO_0712_astroinput.txt", 2464.9864, 1355.9351, True)
 print()
 print("----------TMO LSPR 07/12----------")
 print("Plate constants b1 {} b2 {} a11 {} a12 {} a21 {} a22 {} ".format(b1, b2, a11, a12, a21, a22))

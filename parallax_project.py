@@ -55,7 +55,7 @@ t_obs = 4.35 # UT, hours
 t_x_all = []
 H_x_all = []
 delta_x_all = []
-fin = open("inputs/parallax_cub.txt")
+fin = open("inputs/parallax_project/parallax_cub.txt")
 for line in fin.readlines():
     line = line.strip()
     t, H, delta = map(float, line.split())
@@ -84,7 +84,7 @@ delta_x = linreg_results[0] * t_obs + linreg_results[1]
 t_y_all = []
 H_y_all = []
 delta_y_all = []
-fin = open("inputs/parallax_nmsu.txt")
+fin = open("inputs/parallax_project/parallax_nmsu.txt")
 for line in fin.readlines():
     line = line.strip()
     t, H, delta = map(float, line.split())
