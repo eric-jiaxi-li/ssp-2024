@@ -23,7 +23,7 @@ Observation times:
 2024-07-18 12:24:29 = 2460510.017002 OGG
 """
 
-r2, r_dot2 = odlib.mog("inputs/2012FN62_MOGinput.txt")
+r2, r_dot2 = odlib.mog("inputs/2012FN62/2012FN62_MOGinput.txt")
 print("2012FN62 vectors at 2024-07-10 12:00:16:", r2, r_dot2)
 print("Orbital elements at this time:")
 a, e, i, omega, w, m = odlib.get_orbital_elements(r2[0], r2[1], r2[2], r_dot2[0], r_dot2[1], r_dot2[2])
@@ -67,9 +67,9 @@ odlib.check_error(m, 3.591678123908871E+02, "m", threshold = 1)
 
 
 
-# r2, r_dot2 = odlib.mog("inputs/LiInput_MOG.txt")
-# print("MOG output, ecliptic:", r2, r_dot2)
-# print(odlib.get_orbital_elements(r2[0], r2[1], r2[2], r_dot2[0], r_dot2[1], r_dot2[2]))
+r2, r_dot2 = odlib.mog("inputs/testcases/LiInput_MOG.txt")
+print("MOG output, ecliptic:", r2, r_dot2)
+print(odlib.get_orbital_elements(r2[0], r2[1], r2[2], r_dot2[0], r_dot2[1], r_dot2[2]))
 
 """
 CORRECT: 
