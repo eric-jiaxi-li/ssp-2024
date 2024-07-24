@@ -65,10 +65,11 @@ odlib.check_error(m, 3.591678123908871E+02, "m", threshold = 1)
 
 
 
-
-
+print()
+print("-----SAMPLE TESTCASE-----")
 r2, r_dot2 = odlib.mog("inputs/testcases/LiInput_MOG.txt")
 print("MOG output, ecliptic:", r2, r_dot2)
+print("Distance in AU: ", odlib.mag(r2))
 print(odlib.get_orbital_elements(r2[0], r2[1], r2[2], r_dot2[0], r_dot2[1], r_dot2[2]))
 
 """
