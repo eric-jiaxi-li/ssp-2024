@@ -1,5 +1,6 @@
 """
 Visualize 2012 FN62 orbit
+Mean anomaly might have bugs
 Eric Li
 """
 
@@ -11,12 +12,13 @@ import odlib
 debug = False
 
 # Orbital elements from LiOD.py
+# Julian day of these elements: 2460502.000185
 a = 3.245761552052847 # Checked
 e = 0.6141866747698732 # Checked
 i = radians(9.98211483642601) # Checked
 omega = radians(148.00823478480334) # Checked
 w = radians(142.38377885236548) # Checked (145.532--close enough?)
-m = radians(359.16509165962776) # Don't need to check
+m = radians(359.16509165962776) # Checked (0.9--close enough?)
 
 E = odlib.solve_kepler(m, e, threshold = 1e-9) # Eccentric anomaly, rad
 r = np.array([a * cos(E) - a * e, a * sqrt(1 - e ** 2) * sin(E), 0])
@@ -47,21 +49,23 @@ if debug == True:
 #                   Animation loop
 #
 ######################################################
-if debug == True:
-    aphelion = -1
-    perehelion = 1e9
-    i_debug = -1
-    vern_equinox_vec = np.array([1, 0, 0]) # Vernal equinox = x-axis
-    asc_node_vec = np.array([0, 0, 0])
-    perehelion_vec = np.array([0, 0, 0])
-    w_debug = -1
 
-time = 0
+# These are used for testing elements
+aphelion = -1
+perehelion = 1e9
+i_debug = -1
+vern_equinox_vec = np.array([1, 0, 0]) # Vernal equinox = x-axis
+asc_node_vec = np.array([0, 0, 0])
+perehelion_vec = np.array([0, 0, 0])
+w_debug = -1
+time = 0 # For debugging mean anomaly
+
 period = 2000
 while True:
     rate(200)
 
     # Update position of asteroid
+    time += 1
     m += 2 * pi / period 
     E = odlib.solve_kepler(m, e, threshold = 1e-9) # Eccentric anomaly, rad
     r = np.array([a * cos(E) - a * e, a * sqrt(1 - e ** 2) * sin(E), 0])
@@ -95,8 +99,10 @@ while True:
 
         if abs(asteroid_pos.z) < 1e-3:
             asc_node_vec = np.array([asteroid_pos.x, asteroid_pos.y, asteroid_pos.z])
-        if (mag(asteroid_pos) - perehelion) < 1e-3:
+        if abs(mag(asteroid_pos) - perehelion) < 1e-9: # 1e-3 for most cases, 1e-9 for mean anomaly
             perehelion_vec = np.array([asteroid_pos.x, asteroid_pos.y, asteroid_pos.z])
+            perehelion_time = time
+
         omega_debug = degrees(acos(np.dot(asc_node_vec, vern_equinox_vec) / (odlib.mag(asc_node_vec) * odlib.mag(vern_equinox_vec))))
 
         w_debug = degrees(acos(np.dot(asc_node_vec, perehelion_vec) / (odlib.mag(asc_node_vec) * odlib.mag(perehelion_vec))))
@@ -111,4 +117,5 @@ while True:
         # label(pos = vector(1000, 1000, 600), text = "i = " + str(i_debug))
         # label(pos = vector(1000, 1000, 900), text = "omega = " + str(omega_debug))
         # label(pos = vector(1000, 1000, 1200), text = "w = " + str(w_debug))
+        # label(pos = vector(1000, 1000, 1500), text = "Initial m = " + str(perehelion_time / period * 360))
 

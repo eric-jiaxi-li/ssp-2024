@@ -268,7 +268,7 @@ def mag(vector):
 
 ######################################################
 #
-#              Orbit determination
+#           Orbit determination/visualization
 #
 ######################################################
 
@@ -1163,6 +1163,14 @@ def mog2(t1, RA1, DEC1, R1,
         else:
             last_iteration_r2 = np.copy(r2)
             last_iteration_r_dot2 = np.copy(r_dot2)
+
+
+
+def visualize_orbit(a, e, i, omega, w, m, color, debug = False):
+
+    return None
+
+
 
 
 
