@@ -6,44 +6,45 @@ import numpy as np
 from math import *
 import odlib
 
+np.random.seed(777)
+
 debug = False
 
+only_run_monte_carlo = False
 
 ######################################################
 #
 #                  MOG on 2012 FN62
 #
 ######################################################
+if only_run_monte_carlo == False:
+    """
+    Observation times:
+    2024-06-28 08:15:21 = 2460489.843993 ELP aqwa
+    2024-07-10 12:00:16 = 2460502.000185 Q58 
+    - (wasn't able to find exact on JPL, used 413)
+    2024-07-18 12:24:29 = 2460510.017002 OGG
+    """
 
-"""
-Observation times:
-2024-06-28 08:15:21 = 2460489.843993 ELP aqwa
-2024-07-10 12:00:16 = 2460502.000185 Q58 
-- (wasn't able to find exact on JPL, used 413)
-2024-07-18 12:24:29 = 2460510.017002 OGG
-"""
+    r2, r_dot2 = odlib.mog("inputs/2012FN62/2012FN62_MOGinput.txt")
+    print("2012FN62 vectors at 2024-07-10 12:00:16:", r2, r_dot2)
+    a, e, i, omega, w, m = odlib.get_orbital_elements(r2[0], r2[1], r2[2], r_dot2[0], r_dot2[1], r_dot2[2])
 
-r2, r_dot2 = odlib.mog("inputs/2012FN62/2012FN62_MOGinput.txt")
-print("2012FN62 vectors at 2024-07-10 12:00:16:", r2, r_dot2)
-print("Orbital elements at this time:")
-a, e, i, omega, w, m = odlib.get_orbital_elements(r2[0], r2[1], r2[2], r_dot2[0], r_dot2[1], r_dot2[2])
+    # 2460502.000185000 = A.D. 2024-Jul-10 12:00:15.9840 TDB 
+    #  EC= 6.162095989777298E-01 QR= 1.252863662837021E+00 IN= 1.000625206112275E+01
+    #  OM= 1.479906043977145E+02 W = 1.424191318807842E+02 Tp=  2460506.980212359689
+    #  N = 1.671050275387466E-01 MA= 3.591678123908871E+02 TA= 3.555537239548167E+02
+    #  A = 3.264447624275831E+00 AD= 5.276031585714641E+00 PR= 2.154333746281372E+03
 
-# 2460502.000185000 = A.D. 2024-Jul-10 12:00:15.9840 TDB 
-#  EC= 6.162095989777298E-01 QR= 1.252863662837021E+00 IN= 1.000625206112275E+01
-#  OM= 1.479906043977145E+02 W = 1.424191318807842E+02 Tp=  2460506.980212359689
-#  N = 1.671050275387466E-01 MA= 3.591678123908871E+02 TA= 3.555537239548167E+02
-#  A = 3.264447624275831E+00 AD= 5.276031585714641E+00 PR= 2.154333746281372E+03
-
-print()
-print("ALL ELEMENTS CORRECT WITH UNDER 1% ERROR (2012 FN62)")
-odlib.check_error(a, 3.264447624275831E+00, "a", threshold = 1)
-odlib.check_error(e, 6.162095989777298E-01, "e", threshold = 1)
-odlib.check_error(i, 1.000625206112275E+01, "i", threshold = 1)
-odlib.check_error(omega, 1.479906043977145E+02, "omega", threshold = 1)
-odlib.check_error(w, 1.424191318807842E+02, "w", threshold = 1)
-odlib.check_error(m, 3.591678123908871E+02, "m", threshold = 1)
-
-
+    print()
+    print("Orbital elements at this time:")
+    print("ALL ELEMENTS CORRECT WITH UNDER 1% ERROR (2012 FN62)")
+    odlib.check_error(a, 3.264447624275831E+00, "a", threshold = 1)
+    odlib.check_error(e, 6.162095989777298E-01, "e", threshold = 1)
+    odlib.check_error(i, 1.000625206112275E+01, "i", threshold = 1)
+    odlib.check_error(omega, 1.479906043977145E+02, "omega", threshold = 1)
+    odlib.check_error(w, 1.424191318807842E+02, "w", threshold = 1)
+    odlib.check_error(m, 3.591678123908871E+02, "m", threshold = 1)
 
 
 
@@ -52,35 +53,161 @@ odlib.check_error(m, 3.591678123908871E+02, "m", threshold = 1)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
+######################################################
+#
+#                     Monte Carlo
+#
+######################################################
 
 
 print()
-print("-----SAMPLE TESTCASE-----")
-r2, r_dot2 = odlib.mog("inputs/testcases/LiInput_MOG.txt")
-print("MOG output, ecliptic:", r2, r_dot2)
-print("Distance in AU: ", odlib.mag(r2))
-print(odlib.get_orbital_elements(r2[0], r2[1], r2[2], r_dot2[0], r_dot2[1], r_dot2[2]))
+print()
+print("-----RUNNING MONTE CARLO-----")
+
+
+##########################################
+#            Setup for input
+##########################################
 
 """
-CORRECT: 
-Semimajor axis 2.30430 AU
-Eccentricity 0.54791
-Inclination 3.2412 degrees
-Longitude of the Ascending Node: 213.218 degrees
-Argument of the Perihelion: 98.1439 degrees
-Mean Anomaly at t2: 350.07 degrees
+-----RESULTS FROM ASTROMETRY-----
+REMEMBER THAT UNCERTAINTIES IN ARCSECONDS
+6/27:
+    Uncertainties RA 0.0141631310323522 DEC 0.30669045765817193
+    RA 18.0 hours 2.0 minutes 55.378309 seconds  DEC 12 degrees 31 arcminutes 21.90406 arcseconds
+7/10:
+    Uncertainties RA 0.002782904700978816 DEC 0.0018046091182027507
+    RA 18.0 hours 26.0 minutes 18.697729 seconds  DEC 8 degrees 50 arcminutes 58.523058 arcseconds
+7/17:
+    Uncertainties RA 0.0038768302232221144 DEC 0.00626199644260542
+    RA 18.0 hours 45.0 minutes 2.783863 seconds  DEC 4 degrees 50 arcminutes 44.891622 arcseconds
 """
+
+t1 = 2460489.843993
+RA1_orig = odlib.HMS_to_rad(18, 2, 55.378309)
+sigmaRA1 = radians(0.0141631310323522 / 3600)
+DEC1_orig = odlib.DMS_to_rad(12, 31, 21.90406)
+sigmaDEC1 = radians(0.30669045765817193 / 3600)
+R1 = np.array([-1.202618669769325E-01, 9.262084923058235E-01, 4.014630144278040E-01])
+
+t2 = 2460502.000185
+RA2_orig = odlib.HMS_to_rad(18, 26, 18.697729)
+sigmaRA2 = radians(0.002782904700978816 / 3600)
+DEC2_orig = odlib.DMS_to_rad(8, 50, 58.523058)
+sigmaDEC2 = radians(0.0018046091182027507 / 3600)
+R2 = np.array([-3.206617972850214E-01, 8.851905880039788E-01, 3.837280260259753E-01])
+
+t3 = 2460510.017002
+RA3_orig = odlib.HMS_to_rad(18, 45, 2.783863)
+sigmaRA3 = radians(0.0038768302232221144 / 3600)
+DEC3_orig = odlib.DMS_to_rad(4, 50, 44.891622)
+sigmaDEC3 = radians(0.00626199644260542 / 3600)
+R3 = np.array([-4.460342859078354E-01, 8.378241050812248E-01, 3.631607209761045E-01])
+
+
+
+
+##########################################
+#            Run Monte Carlo
+##########################################
+
+a_all = []
+e_all = []
+i_all = []
+omega_all = []
+w_all = []
+m_all = []
+
+# # Test mog2
+# print("MOG2", odlib.mog2(t1, RA1_orig, DEC1_orig, R1, t2, RA2_orig, DEC2_orig, R2, t3, RA3_orig, DEC3_orig, R3))
+# print("MOG", odlib.mog("inputs/2012FN62/2012FN62_MOGinput.txt"))
+
+n_iter = 1000
+
+for iter in range(n_iter):
+    # print("Running iteration", iter)
+
+    # Choose random RA and DEC
+    RA1 = np.random.normal(RA1_orig, sigmaRA1)
+    DEC1 = np.random.normal(DEC1_orig, sigmaDEC1)
+    RA2 = np.random.normal(RA2_orig, sigmaRA2)
+    DEC2 = np.random.normal(DEC2_orig, sigmaDEC2)
+    RA3 = np.random.normal(RA3_orig, sigmaRA3)
+    DEC3 = np.random.normal(DEC3_orig, sigmaDEC3)
+
+    r2, r_dot2, = odlib.mog2(t1, RA1, DEC1, R1, t2, RA2, DEC2, R2, t3, RA3, DEC3, R3)
+
+    # print(r2, r_dot2)
+
+    a, e, i, omega, w, m = odlib.get_orbital_elements(r2[0], r2[1], r2[2], r_dot2[0], r_dot2[1], r_dot2[2])
+
+    a_all.append(a)
+    e_all.append(e)
+    i_all.append(i)
+    omega_all.append(omega)
+    w_all.append(w)
+    m_all.append(m)
+
+
+a_all = np.array(a_all)
+e_all = np.array(e_all)
+i_all = np.array(i_all)
+omega_all = np.array(omega_all)
+w_all = np.array(w_all)
+m_all = np.array(m_all)
+
+# Standard deviation of the mean (divide by number of iterations sqrt-ed)
+print("Uncertainty for a: ", np.std(a_all) / np.sqrt(n_iter))
+print("Uncertainty for e: ", np.std(e_all) / np.sqrt(n_iter))
+print("Uncertainty for i: ", np.std(i_all) / np.sqrt(n_iter))
+print("Uncertainty for omega: ", np.std(omega_all) / np.sqrt(n_iter))
+print("Uncertainty for w: ", np.std(w_all) / np.sqrt(n_iter))
+print("Uncertainty for m: ", np.std(m_all) / np.sqrt(n_iter))
+
+# RESULTS:
+# Uncertainty for a:  0.0015410949588008727
+# Uncertainty for e:  0.00016744733104140217
+# Uncertainty for i:  0.0018814274566339472
+# Uncertainty for omega:  0.0012969136202898813
+# Uncertainty for w:  0.0018636718958085986
+# Uncertainty for m:  0.00038438592857694667
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# print()
+# print("-----SAMPLE TESTCASE-----")
+# r2, r_dot2 = odlib.mog("inputs/testcases/LiInput_MOG.txt")
+# print("MOG output, ecliptic:", r2, r_dot2)
+# print("Distance in AU: ", odlib.mag(r2))
+# print(odlib.get_orbital_elements(r2[0], r2[1], r2[2], r_dot2[0], r_dot2[1], r_dot2[2]))
+
+# """
+# CORRECT: 
+# Semimajor axis 2.30430 AU
+# Eccentricity 0.54791
+# Inclination 3.2412 degrees
+# Longitude of the Ascending Node: 213.218 degrees
+# Argument of the Perihelion: 98.1439 degrees
+# Mean Anomaly at t2: 350.07 degrees
+# """
 
 
 
