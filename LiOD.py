@@ -45,6 +45,7 @@ if only_run_monte_carlo == False:
     odlib.check_error(omega, 1.479906043977145E+02, "omega", threshold = 1)
     odlib.check_error(w, 1.424191318807842E+02, "w", threshold = 1)
     odlib.check_error(m, 3.591678123908871E+02, "m", threshold = 1)
+    print(a, e, i, omega, w, m)
 
 
 
