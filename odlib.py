@@ -10,6 +10,7 @@ specified things like deg/rad right
 
 Eric Li SSP 2024
 """
+from vpython import *
 from math import *
 from astropy.io import fits
 import numpy as np
@@ -1166,9 +1167,71 @@ def mog2(t1, RA1, DEC1, R1,
 
 
 
-def visualize_orbit(a, e, i, omega, w, m, color, debug = False):
+def visualize_orbit(a, e, i, omega, w, m, col):
+    """
+    Debugging output code in visualize.py
+    Params: Orbital elements in AU and degrees, and
+            the color trail of the orbit.
+    Output: VPython visualization of the orbit
+    """
 
-    return None
+    i = radians(i)
+    omega = radians(omega)
+    w = radians(w)
+    m = radians(m)
+
+    E = solve_kepler(m, e, threshold = 1e-9) # Eccentric anomaly, rad
+    r = np.array([a * cos(E) - a * e, a * sqrt(1 - e ** 2) * sin(E), 0])
+
+    # Rotation matrices to get body's ecliptic coordinates
+    omega_spin = np.array([[cos(omega), -sin(omega), 0], 
+                            [sin(omega), cos(omega), 0], 
+                            [0, 0, 1]])
+    i_spin = np.array([[1, 0, 0], 
+                        [0, cos(i), -sin(i)], 
+                        [0, sin(i), cos(i)]])
+    w_spin = np.array([[cos(w), -sin(w), 0], 
+                        [sin(w), cos(w), 0], 
+                        [0, 0, 1]])
+    r_ec = omega_spin @ i_spin @ w_spin @ r
+
+    # Render objects
+    body_pos = vector(r_ec[0], r_ec[1], r_ec[2])
+    body = sphere(pos = body_pos * 150, radius = 15, color = col)
+    body.trail = curve(color = col)
+    sun = sphere(pos = vector(0,0,0), radius = 50, color = color.yellow, emissive = True)
+
+
+    ######################################################
+    #
+    #                   Animation loop
+    #
+    ######################################################
+
+    period = 2000
+    while True:
+        rate(200)
+
+        # Update position of body
+        m += 2 * pi / period 
+        E = solve_kepler(m, e, threshold = 1e-9) # Eccentric anomaly, rad
+        r = np.array([a * cos(E) - a * e, a * sqrt(1 - e ** 2) * sin(E), 0])
+
+        # Rotation matrices to get body's ecliptic coordinates
+        omega_spin = np.array([[cos(omega), -sin(omega), 0], 
+                                [sin(omega), cos(omega), 0], 
+                                [0, 0, 1]])
+        i_spin = np.array([[1, 0, 0], 
+                            [0, cos(i), -sin(i)], 
+                            [0, sin(i), cos(i)]])
+        w_spin = np.array([[cos(w), -sin(w), 0], 
+                            [sin(w), cos(w), 0], 
+                            [0, 0, 1]])
+        r_ec = omega_spin @ i_spin @ w_spin @ r
+
+        body_pos = vector(r_ec[0], r_ec[1], r_ec[2])
+        body.pos = body_pos * 150
+        body.trail.append(pos = body.pos)
 
 
 
