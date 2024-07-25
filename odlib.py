@@ -866,6 +866,10 @@ def get_orbital_elements(x, y, z, vx, vy, vz):
 
 
 def mog(input_file):
+    """
+    Params: See "Read input" section
+    Output: position and velocity vectors at 2nd observation
+    """
     # Constants
     k_Gauss = 0.0172020989484
     c_AU = 173.144643267 # Speed of light in au/(mean solar)day
@@ -1023,7 +1027,142 @@ def mog(input_file):
 
 
 
+def mog2(t1, RA1, DEC1, R1, 
+         t2, RA2, DEC2, R2,
+         t3, RA3, DEC3, R3):
+    """
+    Duplicate of Method of Gauss function that
+    doesn't require reading from files.
+    Params: observation time, RA/DEC, sun vector
+            for each set of observations. Radians
+    Return: Position and velocity vector at 2nd 
+            observation time
+    """
 
+    # Constants
+    k_Gauss = 0.0172020989484
+    c_AU = 173.144643267 # Speed of light in au/(mean solar)day
+    eps = radians(23.4384668053) # Earth's obliquity
+
+
+
+
+    ######################################################
+    #
+    #                    Read input
+    #
+    ######################################################
+    
+    rho_hat1 = np.array([cos(RA1) * cos(DEC1), sin(RA1) * cos(DEC1), sin(DEC1)])
+    rho_hat2 = np.array([cos(RA2) * cos(DEC2), sin(RA2) * cos(DEC2), sin(DEC2)])
+    rho_hat3 = np.array([cos(RA3) * cos(DEC3), sin(RA3) * cos(DEC3), sin(DEC3)])
+
+    # Original observation times in Julian Days, don't change!
+    t01 = t1
+    t02 = t2
+    t03 = t3
+
+
+
+
+    ######################################################
+    #
+    #                   First iteration
+    #
+    ######################################################
+    D0 = np.dot(rho_hat1, np.cross(rho_hat2, rho_hat3))
+    D11 = np.dot(np.cross(R1, rho_hat2), rho_hat3)
+    D12 = np.dot(np.cross(R2, rho_hat2), rho_hat3)
+    D13 = np.dot(np.cross(R3, rho_hat2), rho_hat3)
+    D21 = np.dot(np.cross(rho_hat1, R1), rho_hat3)
+    D22 = np.dot(np.cross(rho_hat1, R2), rho_hat3)
+    D23 = np.dot(np.cross(rho_hat1, R3), rho_hat3)
+    D31 = np.dot(rho_hat1, np.cross(rho_hat2, R1))
+    D32 = np.dot(rho_hat1, np.cross(rho_hat2, R2))
+    D33 = np.dot(rho_hat1, np.cross(rho_hat2, R3))
+
+    tau1 = k_Gauss * (t1 - t2)
+    tau3 = k_Gauss * (t3 - t2)
+    tau0 = k_Gauss * (t3 - t1)
+
+    # Initial guesses for c1, c3 using Kepler's Laws
+    c1 = tau3 / tau0
+    c2 = -1
+    c3 = -tau1 / tau0
+
+    # Scalar ranges of each observation
+    rho1 = (c1 * D11 + c2 * D12 + c3 * D13) / (c1 * D0)
+    rho2 = (c1 * D21 + c2 * D22 + c3 * D23) / (c2 * D0)
+    rho3 = (c1 * D31 + c2 * D32 + c3 * D33) / (c3 * D0)
+
+    # Position vector (sun to asteroid)
+    r1 = rho1 * rho_hat1 - R1
+    r2 = rho2 * rho_hat2 - R2
+    r3 = rho3 * rho_hat3 - R3
+
+    # Initial linear interpolation of velocity
+    r_dot12 = (r2 - r1) / (-tau1)
+    r_dot23 = (r3 - r2) / (tau3)
+    r_dot2 = tau3 / tau0 * r_dot12 - tau1 / tau0 * r_dot23
+
+    # Store vectors from previous iteration to check convergence
+    last_iteration_r2 = np.copy(r2)
+    last_iteration_r_dot2 = np.copy(r_dot2)
+
+    # Lightspeed correction
+    t1 = t01 - rho1 / c_AU
+    t2 = t02 - rho2 / c_AU
+    t3 = t03 - rho3 / c_AU
+
+
+
+    ######################################################
+    #
+    #                 Subsequent iterations
+    #
+    ######################################################
+
+    while True:
+        tau1 = k_Gauss * (t1 - t2)
+        tau3 = k_Gauss * (t3 - t2)
+        tau0 = k_Gauss * (t3 - t1)
+
+        f1, f3, g1, g3 = get_fg(tau1, tau3, r2, r_dot2)
+        c1 = g3 / (f1 * g3 - g1 * f3)
+        c3 = -g1 / (f1 * g3 - g1 * f3)
+        d1 = -f3 / (f1 * g3 - g1 * f3)
+        d3 = f1 / (f1 * g3 - g1 * f3)
+
+        # Scalar ranges of each observation
+        rho1 = (c1 * D11 + c2 * D12 + c3 * D13) / (c1 * D0)
+        rho2 = (c1 * D21 + c2 * D22 + c3 * D23) / (c2 * D0)
+        rho3 = (c1 * D31 + c2 * D32 + c3 * D33) / (c3 * D0)
+
+        # Position vector (sun to asteroid)
+        r1 = rho1 * rho_hat1 - R1
+        r2 = rho2 * rho_hat2 - R2
+        r3 = rho3 * rho_hat3 - R3
+
+        r_dot2 = d1 * r1 + d3 * r3
+
+        # Lightspeed correction
+        t1 = t01 - rho1 / c_AU
+        t2 = t02 - rho2 / c_AU
+        t3 = t03 - rho3 / c_AU
+
+        # Check for convergence
+        if mag(r2 - last_iteration_r2) + mag(r_dot2 - last_iteration_r_dot2) < 1e-8:
+            # Convert to ecliptic coordinates
+            tilt_spin = np.linalg.inv(np.array([[1, 0, 0], 
+                                                [0, cos(eps), -sin(eps)], 
+                                                [0, sin(eps), cos(eps)]]))
+            
+            # get_orbital_elements requires days, not Gaussian days
+            return tilt_spin @ r2, tilt_spin @ (r_dot2 * k_Gauss) 
+        
+        else:
+            last_iteration_r2 = np.copy(r2)
+            last_iteration_r_dot2 = np.copy(r_dot2)
 
 
 
