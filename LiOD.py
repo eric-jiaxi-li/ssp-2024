@@ -5,6 +5,7 @@ Method of Gauss OD code
 import numpy as np
 from math import *
 import odlib
+import matplotlib.pyplot as plt
 
 np.random.seed(777)
 
@@ -45,11 +46,23 @@ if only_run_monte_carlo == False:
     odlib.check_error(omega, 1.479906043977145E+02, "omega", threshold = 1)
     odlib.check_error(w, 1.424191318807842E+02, "w", threshold = 1)
     odlib.check_error(m, 3.591678123908871E+02, "m", threshold = 1)
-    print(a, e, i, omega, w, m)
+    print(a, e, i, omega, w, m, "on JD 2460502.000185")
 
 
-
-
+######################################################
+#
+#               Ephemeris for 7/27 6 UTC
+#                   JD: 2460518.750000
+#             Observation JD: 2460502.000185
+#
+######################################################
+interval_Gaussian = odlib.days_to_GD(2460518.750000 - 2460502.000185)
+period_Gaussian = sqrt(4 * (pi ** 2) * (a ** 3))
+m_eph = m
+m_eph += 360 * interval_Gaussian / period_Gaussian 
+m_eph= (m_eph % 360) 
+print("M at 7/27 6 UTC =", m_eph)
+print("Uncertainty below")
 
 
 
@@ -172,6 +185,42 @@ print("Uncertainty for m: ", np.std(m_all) / np.sqrt(n_iter))
 # Uncertainty for omega:  0.0012969136202898813
 # Uncertainty for w:  0.0018636718958085986
 # Uncertainty for m:  0.00038438592857694667
+
+# plt.hist(a_all)
+# plt.title("a from Monte Carlo simulations")
+# plt.xlabel("a (AU)")
+# plt.ylabel("Count")
+# plt.show()
+
+# plt.hist(e_all)
+# plt.title("e from Monte Carlo simulations")
+# plt.xlabel("e")
+# plt.ylabel("Count")
+# plt.show()
+
+# plt.hist(i_all)
+# plt.title("i from Monte Carlo simulations")
+# plt.xlabel("i (deg)")
+# plt.ylabel("Count")
+# plt.show()
+
+# plt.hist(omega_all)
+# plt.title("Omega from Monte Carlo simulations")
+# plt.xlabel("Omega (deg)")
+# plt.ylabel("Count")
+# plt.show()
+
+# plt.hist(w_all)
+# plt.title("w from Monte Carlo simulations")
+# plt.xlabel("w (deg)")
+# plt.ylabel("Count")
+# plt.show()
+
+# plt.hist(m_all)
+# plt.title("m from Monte Carlo simulations")
+# plt.xlabel("m (deg)")
+# plt.ylabel("Count")
+# plt.show()
 
 
 
