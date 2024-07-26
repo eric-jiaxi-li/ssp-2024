@@ -1239,8 +1239,8 @@ def visualize_multiple_orbits(r_list, a_list, e_list, i_list, omega_list, w_list
     """
     Debugging output code in visualize.py
     Weird scaling to make it look nice
-    Params: Radius (mi), orbital elements in AU and degrees, and
-            the color trail of the orbit. Each is a list
+    Params: Names of bodies, Radius (mi), orbital elements in AU and 
+            degrees, and the color trail of the orbit. Each is a list.
             Radius will be scaled down
     Output: VPython visualization of the orbit
     """

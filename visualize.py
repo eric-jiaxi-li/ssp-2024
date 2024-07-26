@@ -16,7 +16,7 @@ debug = False
 # A, EC, IN, OM, W, MA
 
 fin = open("inputs/2012FN62/visualize.txt")
-fin.readline() # Body names
+name_list = fin.readline().split() # Body names
 r_list = np.float64(np.array(fin.readline().split())) # Asteroid radius is made-up
 a_list = np.float64(np.array(fin.readline().split()))
 e_list = np.float64(np.array(fin.readline().split()))
