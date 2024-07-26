@@ -14,11 +14,10 @@ debug = False
 # Julian day of these elements: 2460502.000185
 # Generate new planets with Osculating Orbital Elements (center at Sun) at this Julian day
 # A, EC, IN, OM, W, MA
-# Current bodies: asteroid, Mercury, Venus, Earth
 
 fin = open("inputs/2012FN62/visualize.txt")
 fin.readline() # Body names
-r_list = np.float64(np.array(fin.readline().split()))
+r_list = np.float64(np.array(fin.readline().split())) # Asteroid radius is made-up
 a_list = np.float64(np.array(fin.readline().split()))
 e_list = np.float64(np.array(fin.readline().split()))
 i_list = np.float64(np.array(fin.readline().split()))
@@ -27,7 +26,7 @@ w_list = np.float64(np.array(fin.readline().split()))
 m_list = np.float64(np.array(fin.readline().split()))
 col_list = np.array([color.white, color.gray(0.5), vector(1,0.7,0.2), color.green, color.red, vector(1,0.7,0.2), vector(0.8, 0.6, 0.6), color.cyan, color.blue])
 
-odlib.visualize_multiple_orbits(a_list, e_list, i_list, omega_list, w_list, m_list, col_list)
+odlib.visualize_multiple_orbits(r_list, a_list, e_list, i_list, omega_list, w_list, m_list, col_list)
 
 
 # a_list = np.array([3.245761552052847, 3.870970735948419E-01, 7.233275855465966E-01, 1.000525628690563E+00, 1.523659834502866E+00, 5.202599117666169E+00, 9.562130184723967E+00, 1.930353687033573E+01, 3.021761915800814E+01])

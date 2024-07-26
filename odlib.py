@@ -1235,11 +1235,13 @@ def visualize_orbit(a, e, i, omega, w, m, col):
 
 
 
-def visualize_multiple_orbits(a_list, e_list, i_list, omega_list, w_list, m_list, col_list):
+def visualize_multiple_orbits(r_list, a_list, e_list, i_list, omega_list, w_list, m_list, col_list):
     """
     Debugging output code in visualize.py
-    Params: Orbital elements in AU and degrees, and
+    Weird scaling to make it look nice
+    Params: Radius (mi), orbital elements in AU and degrees, and
             the color trail of the orbit. Each is a list
+            Radius will be scaled down
     Output: VPython visualization of the orbit
     """
 
@@ -1289,7 +1291,7 @@ def visualize_multiple_orbits(a_list, e_list, i_list, omega_list, w_list, m_list
 
         # Render objects
         body_pos = vector(r_ec[0], r_ec[1], r_ec[2])
-        body[obj] = sphere(pos = body_pos * 150, radius = 15, color = col)
+        body[obj] = sphere(pos = body_pos * 150, radius = r_list[obj] / 300, color = col, trail_radius = 0.1)
         body[obj].trail = curve(color = col)
 
 
@@ -1299,14 +1301,18 @@ def visualize_multiple_orbits(a_list, e_list, i_list, omega_list, w_list, m_list
     #
     ######################################################
 
-    sun = sphere(pos = vector(0,0,0), radius = 50, color = color.yellow, emissive = True)
+    # Radius of sun is 432690 mi
+    sun = sphere(pos = vector(0,0,0), radius = 30, color = color.yellow, emissive = True)
 
     while True:
+        if "shift" in keysdown():
+            return # End animation
+
         rate(100)
 
         # Update position of each body
         m_list += 2 * pi / period 
-        
+
         for obj in range(n_obj):
             a = a_list[obj]
             e = e_list[obj]
@@ -1334,7 +1340,6 @@ def visualize_multiple_orbits(a_list, e_list, i_list, omega_list, w_list, m_list
             body_pos = vector(r_ec[0], r_ec[1], r_ec[2])
             body[obj].pos = body_pos * 150
             body[obj].trail.append(pos = body[obj].pos)
-
 
 
 
