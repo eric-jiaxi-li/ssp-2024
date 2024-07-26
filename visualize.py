@@ -12,9 +12,18 @@ debug = False
 
 
 # Julian day of these elements: 2460502.000185
-odlib.visualize_orbit(3.245761552052847, 0.6141866747698732, 9.98211483642601, 148.00823478480334, 
-                      142.38377885236548, 359.16509165962776, color.white) # Asteroid
+# Generate new planets with Osculating Orbital Elements (center at Sun) at this Julian day
+# A, EC, IN, OM, W, MA
+# Current bodies: asteroid, Earth
+a_list = np.array([3.245761552052847, 1.000525628690563E+00])
+e_list = np.array([0.6141866747698732, 1.621348364416402E-02])
+i_list = np.array([9.98211483642601, 2.343670108483834E+01])
+omega_list = np.array([148.00823478480334, 3.599966754616262E+02])
+w_list = np.array([142.38377885236548, 1.019166684209871E+02])
+m_list = np.array([359.16509165962776, 1.866838072819970E+02])
+col_list = np.array([color.white, color.blue])
 
+odlib.visualize_multiple_orbits(a_list, e_list, i_list, omega_list, w_list, m_list, col_list)
 
 
 

@@ -1235,6 +1235,107 @@ def visualize_orbit(a, e, i, omega, w, m, col):
 
 
 
+def visualize_multiple_orbits(a_list, e_list, i_list, omega_list, w_list, m_list, col_list):
+    """
+    Debugging output code in visualize.py
+    Params: Orbital elements in AU and degrees, and
+            the color trail of the orbit. Each is a list
+    Output: VPython visualization of the orbit
+    """
+
+    n_obj = len(a_list) # Number of orbiting objects
+    body = [-1] * n_obj # List of all orbiting VPython objects
+
+    i_list = np.radians(i_list)
+    omega_list = np.radians(omega_list)
+    w_list = np.radians(w_list)
+    m_list = np.radians(m_list)
+
+    # Calculate period of each value
+    mu = 0.0002959122 # From Dr. Bauer's code
+    period = np.sqrt(4 * pi ** 2 / mu * a_list ** 3) # Period of each orbit
+
+
+
+
+    ######################################################
+    #
+    #                Initial positions
+    #
+    ######################################################
+    for obj in range(n_obj):
+        a = a_list[obj]
+        e = e_list[obj]
+        i = i_list[obj]
+        omega = omega_list[obj]
+        w = w_list[obj]
+        m = m_list[obj]
+        col = col_list[obj]
+
+        E = solve_kepler(m, e, threshold = 1e-9) # Eccentric anomaly, rad
+        r = np.array([a * cos(E) - a * e, a * sqrt(1 - e ** 2) * sin(E), 0])
+
+        # Rotation matrices to get body's ecliptic coordinates
+        omega_spin = np.array([[cos(omega), -sin(omega), 0], 
+                                [sin(omega), cos(omega), 0], 
+                                [0, 0, 1]])
+        i_spin = np.array([[1, 0, 0], 
+                            [0, cos(i), -sin(i)], 
+                            [0, sin(i), cos(i)]])
+        w_spin = np.array([[cos(w), -sin(w), 0], 
+                            [sin(w), cos(w), 0], 
+                            [0, 0, 1]])
+        r_ec = omega_spin @ i_spin @ w_spin @ r
+
+        # Render objects
+        body_pos = vector(r_ec[0], r_ec[1], r_ec[2])
+        body[obj] = sphere(pos = body_pos * 150, radius = 15, color = col)
+        body[obj].trail = curve(color = col)
+
+
+    ######################################################
+    #
+    #                   Animation loops
+    #
+    ######################################################
+
+    sun = sphere(pos = vector(0,0,0), radius = 50, color = color.yellow, emissive = True)
+
+    while True:
+        rate(100)
+
+        # Update position of each body
+        m_list += 2 * pi / period 
+        
+        for obj in range(n_obj):
+            a = a_list[obj]
+            e = e_list[obj]
+            i = i_list[obj]
+            omega = omega_list[obj]
+            w = w_list[obj]
+            m = m_list[obj]
+            col = col_list[obj]
+
+            E = solve_kepler(m, e, threshold = 1e-9) # Eccentric anomaly, rad
+            r = np.array([a * cos(E) - a * e, a * sqrt(1 - e ** 2) * sin(E), 0])
+
+            # Rotation matrices to get body's ecliptic coordinates
+            omega_spin = np.array([[cos(omega), -sin(omega), 0], 
+                                    [sin(omega), cos(omega), 0], 
+                                    [0, 0, 1]])
+            i_spin = np.array([[1, 0, 0], 
+                                [0, cos(i), -sin(i)], 
+                                [0, sin(i), cos(i)]])
+            w_spin = np.array([[cos(w), -sin(w), 0], 
+                                [sin(w), cos(w), 0], 
+                                [0, 0, 1]])
+            r_ec = omega_spin @ i_spin @ w_spin @ r
+
+            body_pos = vector(r_ec[0], r_ec[1], r_ec[2])
+            body[obj].pos = body_pos * 150
+            body[obj].trail.append(pos = body[obj].pos)
+
+
 
 
 ######################################################
