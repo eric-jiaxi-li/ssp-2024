@@ -10,10 +10,10 @@ import matplotlib.pyplot as plt
 np.random.seed(777)
 
 debug = False
-plot = False
+plot = True
 
 run_2012FN62 = False
-run_monte_carlo = False
+run_monte_carlo = True
 run_jackknife = True
 
 ######################################################
@@ -51,14 +51,9 @@ if run_2012FN62 == True:
     odlib.check_error(m, 3.591678123908871E+02, "m", threshold = 1)
     print(a, e, i, omega, w, m, "on JD 2460502.000185")
 
-
-######################################################
-#
-#               Ephemeris for 7/27 6 UTC
-#                   JD: 2460518.750000
-#             Observation JD: 2460502.000185
-#
-######################################################
+# Ephemeris for 7/27 6 UTC
+# JD: 2460518.750000
+# Observation JD: 2460502.000185
 if run_2012FN62 == True:
     interval_Gaussian = odlib.days_to_GD(2460518.750000 - 2460502.000185)
     period_Gaussian = sqrt(4 * (pi ** 2) * (a ** 3))
@@ -67,7 +62,6 @@ if run_2012FN62 == True:
     m_eph= (m_eph % 360) 
     print("M at 7/27 6 UTC =", m_eph)
     print("Uncertainty below")
-
 
 
 
@@ -189,37 +183,37 @@ if run_monte_carlo == True:
     # Uncertainty for m:  0.00038438592857694667
 
     if plot == True:
-        plt.hist(a_all)
+        plt.hist(a_all, bins = 50)
         plt.title("a from Monte Carlo simulations")
         plt.xlabel("a (AU)")
         plt.ylabel("Count")
         plt.show()
 
-        plt.hist(e_all)
+        plt.hist(e_all, bins = 50)
         plt.title("e from Monte Carlo simulations")
         plt.xlabel("e")
         plt.ylabel("Count")
         plt.show()
 
-        plt.hist(i_all)
+        plt.hist(i_all, bins = 50)
         plt.title("i from Monte Carlo simulations")
         plt.xlabel("i (deg)")
         plt.ylabel("Count")
         plt.show()
 
-        plt.hist(omega_all)
+        plt.hist(omega_all, bins = 50)
         plt.title("Omega from Monte Carlo simulations")
         plt.xlabel("Omega (deg)")
         plt.ylabel("Count")
         plt.show()
 
-        plt.hist(w_all)
+        plt.hist(w_all, bins = 50)
         plt.title("w from Monte Carlo simulations")
         plt.xlabel("w (deg)")
         plt.ylabel("Count")
         plt.show()
 
-        plt.hist(m_all)
+        plt.hist(m_all, bins = 50)
         plt.title("m from Monte Carlo simulations")
         plt.xlabel("m (deg)")
         plt.ylabel("Count")
