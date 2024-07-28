@@ -10,11 +10,11 @@ import matplotlib.pyplot as plt
 np.random.seed(777)
 
 debug = False
-plot = True
+plot = False
 
-run_2012FN62 = False
+run_2012FN62 = True
 run_monte_carlo = True
-run_jackknife = True
+run_jackknife = False
 
 ######################################################
 #
