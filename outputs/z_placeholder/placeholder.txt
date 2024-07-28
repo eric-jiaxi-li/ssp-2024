@@ -1,0 +1,1 @@
+To avoid folder display looking weird in GitHub and VS Code
