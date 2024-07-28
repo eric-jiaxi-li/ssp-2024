@@ -1247,6 +1247,8 @@ def visualize_multiple_orbits(r_list, a_list, e_list, i_list, omega_list, w_list
 
     n_obj = len(a_list) # Number of orbiting objects
     body = [-1] * n_obj # List of all orbiting VPython objects
+    scene.lights = [] # Remove default lighting sources
+    local_light(pos = vector(0, 0, 0), color = color.white)
 
     i_list = np.radians(i_list)
     omega_list = np.radians(omega_list)
