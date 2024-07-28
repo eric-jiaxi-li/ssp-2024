@@ -10,15 +10,18 @@ import matplotlib.pyplot as plt
 np.random.seed(777)
 
 debug = False
+plot = False
 
-only_run_monte_carlo = False
+run_2012FN62 = False
+run_monte_carlo = False
+run_jackknife = True
 
 ######################################################
 #
 #                  MOG on 2012 FN62
 #
 ######################################################
-if only_run_monte_carlo == False:
+if run_2012FN62 == True:
     """
     Observation times:
     2024-06-28 08:15:21 = 2460489.843993 ELP aqwa
@@ -56,13 +59,14 @@ if only_run_monte_carlo == False:
 #             Observation JD: 2460502.000185
 #
 ######################################################
-interval_Gaussian = odlib.days_to_GD(2460518.750000 - 2460502.000185)
-period_Gaussian = sqrt(4 * (pi ** 2) * (a ** 3))
-m_eph = m
-m_eph += 360 * interval_Gaussian / period_Gaussian 
-m_eph= (m_eph % 360) 
-print("M at 7/27 6 UTC =", m_eph)
-print("Uncertainty below")
+if run_2012FN62 == True:
+    interval_Gaussian = odlib.days_to_GD(2460518.750000 - 2460502.000185)
+    period_Gaussian = sqrt(4 * (pi ** 2) * (a ** 3))
+    m_eph = m
+    m_eph += 360 * interval_Gaussian / period_Gaussian 
+    m_eph= (m_eph % 360) 
+    print("M at 7/27 6 UTC =", m_eph)
+    print("Uncertainty below")
 
 
 
@@ -73,88 +77,191 @@ print("Uncertainty below")
 #
 ######################################################
 
+if run_monte_carlo == True:
+    print()
+    print()
+    print("-----RUNNING MONTE CARLO-----")
 
-print()
-print()
-print("-----RUNNING MONTE CARLO-----")
+
+    ##########################################
+    #            Setup for input
+    ##########################################
+
+    """
+    -----RESULTS FROM ASTROMETRY-----
+    REMEMBER THAT UNCERTAINTIES IN ARCSECONDS
+    6/27:
+        Uncertainties RA 0.0141631310323522 DEC 0.30669045765817193
+        RA 18.0 hours 2.0 minutes 55.378309 seconds  DEC 12 degrees 31 arcminutes 21.90406 arcseconds
+    7/10:
+        Uncertainties RA 0.002782904700978816 DEC 0.0018046091182027507
+        RA 18.0 hours 26.0 minutes 18.697729 seconds  DEC 8 degrees 50 arcminutes 58.523058 arcseconds
+    7/17:
+        Uncertainties RA 0.0038768302232221144 DEC 0.00626199644260542
+        RA 18.0 hours 45.0 minutes 2.783863 seconds  DEC 4 degrees 50 arcminutes 44.891622 arcseconds
+    """
+
+    t1 = 2460489.843993
+    RA1_orig = odlib.HMS_to_rad(18, 2, 55.378309)
+    sigmaRA1 = radians(0.0141631310323522 / 3600)
+    DEC1_orig = odlib.DMS_to_rad(12, 31, 21.90406)
+    sigmaDEC1 = radians(0.30669045765817193 / 3600)
+    R1 = np.array([-1.202618669769325E-01, 9.262084923058235E-01, 4.014630144278040E-01])
+
+    t2 = 2460502.000185
+    RA2_orig = odlib.HMS_to_rad(18, 26, 18.697729)
+    sigmaRA2 = radians(0.002782904700978816 / 3600)
+    DEC2_orig = odlib.DMS_to_rad(8, 50, 58.523058)
+    sigmaDEC2 = radians(0.0018046091182027507 / 3600)
+    R2 = np.array([-3.206617972850214E-01, 8.851905880039788E-01, 3.837280260259753E-01])
+
+    t3 = 2460510.017002
+    RA3_orig = odlib.HMS_to_rad(18, 45, 2.783863)
+    sigmaRA3 = radians(0.0038768302232221144 / 3600)
+    DEC3_orig = odlib.DMS_to_rad(4, 50, 44.891622)
+    sigmaDEC3 = radians(0.00626199644260542 / 3600)
+    R3 = np.array([-4.460342859078354E-01, 8.378241050812248E-01, 3.631607209761045E-01])
+
+
+    ##########################################
+    #            Run Monte Carlo
+    ##########################################
+
+    a_all = []
+    e_all = []
+    i_all = []
+    omega_all = []
+    w_all = []
+    m_all = []
+
+    # # Test mog2
+    # print("MOG2", odlib.mog2(t1, RA1_orig, DEC1_orig, R1, t2, RA2_orig, DEC2_orig, R2, t3, RA3_orig, DEC3_orig, R3))
+    # print("MOG", odlib.mog("inputs/2012FN62/2012FN62_MOGinput.txt"))
+
+    n_iter = 1000
+
+    for iter in range(n_iter):
+        # print("Running iteration", iter)
+
+        # Choose random RA and DEC
+        RA1 = np.random.normal(RA1_orig, sigmaRA1)
+        DEC1 = np.random.normal(DEC1_orig, sigmaDEC1)
+        RA2 = np.random.normal(RA2_orig, sigmaRA2)
+        DEC2 = np.random.normal(DEC2_orig, sigmaDEC2)
+        RA3 = np.random.normal(RA3_orig, sigmaRA3)
+        DEC3 = np.random.normal(DEC3_orig, sigmaDEC3)
+
+        r2, r_dot2, = odlib.mog2(t1, RA1, DEC1, R1, t2, RA2, DEC2, R2, t3, RA3, DEC3, R3)
+
+        # print(r2, r_dot2)
+
+        a, e, i, omega, w, m = odlib.get_orbital_elements(r2[0], r2[1], r2[2], r_dot2[0], r_dot2[1], r_dot2[2])
+
+        a_all.append(a)
+        e_all.append(e)
+        i_all.append(i)
+        omega_all.append(omega)
+        w_all.append(w)
+        m_all.append(m)
+
+
+    a_all = np.array(a_all)
+    e_all = np.array(e_all)
+    i_all = np.array(i_all)
+    omega_all = np.array(omega_all)
+    w_all = np.array(w_all)
+    m_all = np.array(m_all)
+
+    # Standard deviation of the mean (divide by number of iterations sqrt-ed)
+    print("Uncertainty for a: ", np.std(a_all) / np.sqrt(n_iter))
+    print("Uncertainty for e: ", np.std(e_all) / np.sqrt(n_iter))
+    print("Uncertainty for i: ", np.std(i_all) / np.sqrt(n_iter))
+    print("Uncertainty for omega: ", np.std(omega_all) / np.sqrt(n_iter))
+    print("Uncertainty for w: ", np.std(w_all) / np.sqrt(n_iter))
+    print("Uncertainty for m: ", np.std(m_all) / np.sqrt(n_iter))
+
+    # RESULTS:
+    # Uncertainty for a:  0.0015410949588008727
+    # Uncertainty for e:  0.00016744733104140217
+    # Uncertainty for i:  0.0018814274566339472
+    # Uncertainty for omega:  0.0012969136202898813
+    # Uncertainty for w:  0.0018636718958085986
+    # Uncertainty for m:  0.00038438592857694667
+
+    if plot == True:
+        plt.hist(a_all)
+        plt.title("a from Monte Carlo simulations")
+        plt.xlabel("a (AU)")
+        plt.ylabel("Count")
+        plt.show()
+
+        plt.hist(e_all)
+        plt.title("e from Monte Carlo simulations")
+        plt.xlabel("e")
+        plt.ylabel("Count")
+        plt.show()
+
+        plt.hist(i_all)
+        plt.title("i from Monte Carlo simulations")
+        plt.xlabel("i (deg)")
+        plt.ylabel("Count")
+        plt.show()
+
+        plt.hist(omega_all)
+        plt.title("Omega from Monte Carlo simulations")
+        plt.xlabel("Omega (deg)")
+        plt.ylabel("Count")
+        plt.show()
+
+        plt.hist(w_all)
+        plt.title("w from Monte Carlo simulations")
+        plt.xlabel("w (deg)")
+        plt.ylabel("Count")
+        plt.show()
+
+        plt.hist(m_all)
+        plt.title("m from Monte Carlo simulations")
+        plt.xlabel("m (deg)")
+        plt.ylabel("Count")
+        plt.show()
+
 
 
 ##########################################
-#            Setup for input
+#            Run Jackknife
+#           Didn't converge
 ##########################################
+if run_jackknife == True:
+    t1 = 2460489.843993
+    RA1 = odlib.HMS_to_rad(18, 2, 55.378309)
+    DEC1 = odlib.DMS_to_rad(12, 31, 21.90406)
+    R1 = np.array([-1.202618669769325E-01, 9.262084923058235E-01, 4.014630144278040E-01])
 
-"""
------RESULTS FROM ASTROMETRY-----
-REMEMBER THAT UNCERTAINTIES IN ARCSECONDS
-6/27:
-    Uncertainties RA 0.0141631310323522 DEC 0.30669045765817193
-    RA 18.0 hours 2.0 minutes 55.378309 seconds  DEC 12 degrees 31 arcminutes 21.90406 arcseconds
-7/10:
-    Uncertainties RA 0.002782904700978816 DEC 0.0018046091182027507
-    RA 18.0 hours 26.0 minutes 18.697729 seconds  DEC 8 degrees 50 arcminutes 58.523058 arcseconds
-7/17:
-    Uncertainties RA 0.0038768302232221144 DEC 0.00626199644260542
-    RA 18.0 hours 45.0 minutes 2.783863 seconds  DEC 4 degrees 50 arcminutes 44.891622 arcseconds
-"""
+    t2 = 2460502.000185
+    RA2 = odlib.HMS_to_rad(18, 26, 18.697729)
+    DEC2 = odlib.DMS_to_rad(8, 50, 58.523058)
+    R2 = np.array([-3.206617972850214E-01, 8.851905880039788E-01, 3.837280260259753E-01])
 
-t1 = 2460489.843993
-RA1_orig = odlib.HMS_to_rad(18, 2, 55.378309)
-sigmaRA1 = radians(0.0141631310323522 / 3600)
-DEC1_orig = odlib.DMS_to_rad(12, 31, 21.90406)
-sigmaDEC1 = radians(0.30669045765817193 / 3600)
-R1 = np.array([-1.202618669769325E-01, 9.262084923058235E-01, 4.014630144278040E-01])
+    t3 = 2460510.017002
+    RA3 = odlib.HMS_to_rad(18, 45, 2.783863)
+    DEC3 = odlib.DMS_to_rad(4, 50, 44.891622)
+    R3 = np.array([-4.460342859078354E-01, 8.378241050812248E-01, 3.631607209761045E-01])
 
-t2 = 2460502.000185
-RA2_orig = odlib.HMS_to_rad(18, 26, 18.697729)
-sigmaRA2 = radians(0.002782904700978816 / 3600)
-DEC2_orig = odlib.DMS_to_rad(8, 50, 58.523058)
-sigmaDEC2 = radians(0.0018046091182027507 / 3600)
-R2 = np.array([-3.206617972850214E-01, 8.851905880039788E-01, 3.837280260259753E-01])
+    # TMO data, between t2 and t3
+    t4 = 2460504.646
+    RA4 = odlib.HMS_to_rad(18, 32, 13.6617)
+    DEC4 = odlib.DMS_to_rad(7, 38, 51.384670187424746)
+    R4 = np.array([-3.627620462046954E-01, 8.712919662391226E-01, 3.776594497621888E-01])
 
-t3 = 2460510.017002
-RA3_orig = odlib.HMS_to_rad(18, 45, 2.783863)
-sigmaRA3 = radians(0.0038768302232221144 / 3600)
-DEC3_orig = odlib.DMS_to_rad(4, 50, 44.891622)
-sigmaDEC3 = radians(0.00626199644260542 / 3600)
-R3 = np.array([-4.460342859078354E-01, 8.378241050812248E-01, 3.631607209761045E-01])
-
-
-
-
-##########################################
-#            Run Monte Carlo
-##########################################
-
-a_all = []
-e_all = []
-i_all = []
-omega_all = []
-w_all = []
-m_all = []
-
-# # Test mog2
-# print("MOG2", odlib.mog2(t1, RA1_orig, DEC1_orig, R1, t2, RA2_orig, DEC2_orig, R2, t3, RA3_orig, DEC3_orig, R3))
-# print("MOG", odlib.mog("inputs/2012FN62/2012FN62_MOGinput.txt"))
-
-n_iter = 1000
-
-for iter in range(n_iter):
-    # print("Running iteration", iter)
-
-    # Choose random RA and DEC
-    RA1 = np.random.normal(RA1_orig, sigmaRA1)
-    DEC1 = np.random.normal(DEC1_orig, sigmaDEC1)
-    RA2 = np.random.normal(RA2_orig, sigmaRA2)
-    DEC2 = np.random.normal(DEC2_orig, sigmaDEC2)
-    RA3 = np.random.normal(RA3_orig, sigmaRA3)
-    DEC3 = np.random.normal(DEC3_orig, sigmaDEC3)
+    a_all = []
+    e_all = []
+    i_all = []
+    omega_all = []
+    w_all = []
+    m_all = []
 
     r2, r_dot2, = odlib.mog2(t1, RA1, DEC1, R1, t2, RA2, DEC2, R2, t3, RA3, DEC3, R3)
-
-    # print(r2, r_dot2)
-
     a, e, i, omega, w, m = odlib.get_orbital_elements(r2[0], r2[1], r2[2], r_dot2[0], r_dot2[1], r_dot2[2])
-
     a_all.append(a)
     e_all.append(e)
     i_all.append(i)
@@ -162,65 +269,39 @@ for iter in range(n_iter):
     w_all.append(w)
     m_all.append(m)
 
+    r2, r_dot2, = odlib.mog2(t1, RA1, DEC1, R1, t2, RA2, DEC2, R2, t4, RA4, DEC4, R4)
+    a, e, i, omega, w, m = odlib.get_orbital_elements(r2[0], r2[1], r2[2], r_dot2[0], r_dot2[1], r_dot2[2])
+    a_all.append(a)
+    e_all.append(e)
+    i_all.append(i)
+    omega_all.append(omega)
+    w_all.append(w)
+    m_all.append(m)
 
-a_all = np.array(a_all)
-e_all = np.array(e_all)
-i_all = np.array(i_all)
-omega_all = np.array(omega_all)
-w_all = np.array(w_all)
-m_all = np.array(m_all)
+    r2, r_dot2, = odlib.mog2(t1, RA1, DEC1, R1, t4, RA4, DEC4, R4, t3, RA3, DEC3, R3)
+    a, e, i, omega, w, m = odlib.get_orbital_elements(r2[0], r2[1], r2[2], r_dot2[0], r_dot2[1], r_dot2[2])
+    a_all.append(a)
+    e_all.append(e)
+    i_all.append(i)
+    omega_all.append(omega)
+    w_all.append(w)
+    m_all.append(m)
 
-# Standard deviation of the mean (divide by number of iterations sqrt-ed)
-print("Uncertainty for a: ", np.std(a_all) / np.sqrt(n_iter))
-print("Uncertainty for e: ", np.std(e_all) / np.sqrt(n_iter))
-print("Uncertainty for i: ", np.std(i_all) / np.sqrt(n_iter))
-print("Uncertainty for omega: ", np.std(omega_all) / np.sqrt(n_iter))
-print("Uncertainty for w: ", np.std(w_all) / np.sqrt(n_iter))
-print("Uncertainty for m: ", np.std(m_all) / np.sqrt(n_iter))
+    r2, r_dot2, = odlib.mog2(t2, RA2, DEC2, R2, t4, RA4, DEC4, R4, t3, RA3, DEC3, R3)
+    a, e, i, omega, w, m = odlib.get_orbital_elements(r2[0], r2[1], r2[2], r_dot2[0], r_dot2[1], r_dot2[2])
+    a_all.append(a)
+    e_all.append(e)
+    i_all.append(i)
+    omega_all.append(omega)
+    w_all.append(w)
+    m_all.append(m)
 
-# RESULTS:
-# Uncertainty for a:  0.0015410949588008727
-# Uncertainty for e:  0.00016744733104140217
-# Uncertainty for i:  0.0018814274566339472
-# Uncertainty for omega:  0.0012969136202898813
-# Uncertainty for w:  0.0018636718958085986
-# Uncertainty for m:  0.00038438592857694667
-
-# plt.hist(a_all)
-# plt.title("a from Monte Carlo simulations")
-# plt.xlabel("a (AU)")
-# plt.ylabel("Count")
-# plt.show()
-
-# plt.hist(e_all)
-# plt.title("e from Monte Carlo simulations")
-# plt.xlabel("e")
-# plt.ylabel("Count")
-# plt.show()
-
-# plt.hist(i_all)
-# plt.title("i from Monte Carlo simulations")
-# plt.xlabel("i (deg)")
-# plt.ylabel("Count")
-# plt.show()
-
-# plt.hist(omega_all)
-# plt.title("Omega from Monte Carlo simulations")
-# plt.xlabel("Omega (deg)")
-# plt.ylabel("Count")
-# plt.show()
-
-# plt.hist(w_all)
-# plt.title("w from Monte Carlo simulations")
-# plt.xlabel("w (deg)")
-# plt.ylabel("Count")
-# plt.show()
-
-# plt.hist(m_all)
-# plt.title("m from Monte Carlo simulations")
-# plt.xlabel("m (deg)")
-# plt.ylabel("Count")
-# plt.show()
+    print(a_all)
+    print(e_all)
+    print(i_all)
+    print(omega_all)
+    print(w_all)
+    print(m_all)
 
 
 
@@ -241,6 +322,17 @@ print("Uncertainty for m: ", np.std(m_all) / np.sqrt(n_iter))
 
 
 
+
+#######################################################################################################################
+#######################################################################################################################
+#######################################################################################################################
+#######################################################################################################################
+#######################################################################################################################
+#######################################################################################################################
+#######################################################################################################################
+#######################################################################################################################
+#######################################################################################################################
+#######################################################################################################################
 
 # print()
 # print("-----SAMPLE TESTCASE-----")
