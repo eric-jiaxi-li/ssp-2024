@@ -10,7 +10,7 @@ All the code I wrote at the 2024 Summer Science Program at New Mexico State Univ
 
 - Various side quests, including a Visual Python representation of the asteroid's orbit. (The white sphere is the asteroid, and the other spheres are the planets.)
 
-https://github.com/user-attachments/assets/23b951c0-9dff-4f96-85c9-575801fee211
+![orbit](https://github.com/user-attachments/assets/6de15d96-1565-4636-8bbb-8045c7194a5e)
 
 
 
